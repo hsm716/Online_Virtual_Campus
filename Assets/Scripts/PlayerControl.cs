@@ -84,8 +84,8 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         }
         else
         {
-            transform.position = Vector3.Lerp(transform.position, curPos, Time.deltaTime * 20f);
-            transform.rotation = Quaternion.Lerp(transform.rotation, curRot, Time.deltaTime * 20f);
+            transform.position = Vector3.Slerp(transform.position, curPos, Time.deltaTime * 10f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, curRot, Time.deltaTime * 10f);
             
         }
     }
