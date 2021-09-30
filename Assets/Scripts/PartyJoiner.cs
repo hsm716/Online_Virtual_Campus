@@ -57,8 +57,7 @@ public class PartyJoiner : Photon.MonoBehaviour
         AgoraVideoChat.PlayerChatIsEmpty -= DisableLeaveButton;
         AgoraVideoChat.PlayerChatIsPopulated -= EnableLeaveButton;
     }
-
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (!photonView.isMine || !other.CompareTag("Player"))
         {
@@ -73,20 +72,48 @@ public class PartyJoiner : Photon.MonoBehaviour
             inviteButton.interactable = true;
         }
     }
-
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit2D(Collider2D other)
     {
-        if(!photonView.isMine || !other.CompareTag("Player"))
+        if (!photonView.isMine || !other.CompareTag("Player"))
         {
             return;
         }
 
         // Remove that player reference when they walk away.
-        remoteInviteChannelName = null;    
+        remoteInviteChannelName = null;
         inviteButton.interactable = false;
         joinButton.SetActive(false);
     }
 
+    /*    private void OnTriggerEnter(Collider other)
+        {
+            if (!photonView.isMine || !other.CompareTag("Player"))
+            {
+                return;
+            }
+
+            // Get a reference to the player that we are standing next to in our Trigger Volume.
+            PhotonView otherPlayerPhotonView = other.GetComponent<PhotonView>();
+            if (otherPlayerPhotonView != null)
+            {
+                remotePlayerViewID = otherPlayerPhotonView.viewID;
+                inviteButton.interactable = true;
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if(!photonView.isMine || !other.CompareTag("Player"))
+            {
+                return;
+            }
+
+            // Remove that player reference when they walk away.
+            remoteInviteChannelName = null;    
+            inviteButton.interactable = false;
+            joinButton.SetActive(false);
+        }
+    */
     public void OnInviteButtonPress()
     {
         // Sends out a ping across the Photon network to check if any players have this "Invite" function attached.
