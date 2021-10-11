@@ -10,6 +10,9 @@ public class Launcher : MonoBehaviour
 
     public InputField PlayerNameInput;
 
+    public GameObject ChatList;
+    public List<string> messages = new List<string>();
+
     private void Awake()
     {
         if (!PhotonNetwork.connected)
@@ -38,6 +41,7 @@ public class Launcher : MonoBehaviour
             PlayerNameInput.text = "Player " + Random.Range(0, 10000).ToString("0000");
         }
     }
+
 
 
     public void JoinRoom()
