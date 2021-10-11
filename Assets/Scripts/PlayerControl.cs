@@ -50,7 +50,6 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     {
         if (PV.isMine)
         {
-
             h = Input.GetAxisRaw("Horizontal");
             v = Input.GetAxisRaw("Vertical");
 
