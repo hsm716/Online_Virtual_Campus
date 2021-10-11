@@ -8,48 +8,56 @@ public class Launcher : MonoBehaviour
     public GameObject LoadingMenu;
     public GameObject MainMenu;
 
-    public InputField CreateRoomInput;
-    public InputField JoinRoomInput;
+    public InputField PlayerNameInput;
 
     private void Awake()
     {
         if (!PhotonNetwork.connected)
             PhotonNetwork.ConnectUsingSettings("v1.0"); // version of the game/demo. used to separate older clients from newer ones (e.g. if incompatible)
 
-        PhotonNetwork.playerName = PlayerPrefs.GetString("playerName", "Guest" + Random.Range(1, 9999));
+        PlayerNameInput.text = "Player " + Random.Range(0, 10000).ToString("0000");
 
         //Set camera clipping for nicer "main menu" background
         Camera.main.farClipPlane = Camera.main.nearClipPlane + 0.1f;
     }
 
-    private string roomName = "myRoom";
+    private string roomName = "Main Campus";
     private Vector2 scrollPos = Vector2.zero;
 
     public void Start()
     {
         LoadingMenu.SetActive(true);
+
+        if (PlayerPrefs.HasKey("username"))
+        {
+            PlayerNameInput.text = PlayerPrefs.GetString("username");
+            PhotonNetwork.playerName = PlayerPrefs.GetString("username");
+        }
+        else
+        {
+            PlayerNameInput.text = "Player " + Random.Range(0, 10000).ToString("0000");
+        }
     }
 
-    public void CreateRoom()
-    {
-        roomName = CreateRoomInput.text;
-        PhotonNetwork.CreateRoom(roomName, new RoomOptions() { MaxPlayers = 10 }, TypedLobby.Default);
-    }
 
     public void JoinRoom()
     {
-        roomName = JoinRoomInput.text;
-        PhotonNetwork.JoinRoom(roomName);
+        if(PhotonNetwork.GetRoomList().Length == 0) //if there's no room, create room self
+        {
+            PlayerPrefs.SetString("username", PlayerNameInput.text);
+            PhotonNetwork.playerName = PlayerNameInput.text;
+            MainMenu.SetActive(false);
+            PhotonNetwork.CreateRoom(roomName, new RoomOptions() { MaxPlayers = 20 }, TypedLobby.Default);
+        }
+        else //if already room exists, join that room
+        {
+            PlayerPrefs.SetString("username", PlayerNameInput.text);
+            PhotonNetwork.playerName = PlayerNameInput.text;
+            MainMenu.SetActive(false);
+            PhotonNetwork.JoinRoom(roomName);
+        }
     }
 
-
-    void ShowConnectingGUI()
-    {
-        GUILayout.Label("Connecting to Photon server.");
-        GUILayout.Label("Hint: This demo uses a settings file and logs the server address to the console.");
-
-        GUILayout.EndArea();
-    }
 
     public void OnConnectedToMaster()
     {
