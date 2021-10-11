@@ -29,7 +29,7 @@ public class ChatVik : Photon.MonoBehaviour
         
         //Show scroll list of chat messages
         scrollPos = GUILayout.BeginScrollView(scrollPos);
-        GUI.color = Color.green;
+        GUI.color = Color.red;
         for (int i = messages.Count - 1; i >= 0; i--)
         {
             GUILayout.Label(messages[i]);
