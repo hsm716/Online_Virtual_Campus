@@ -211,7 +211,7 @@ public class AgoraVideoChat : Photon.MonoBehaviour
         }
         newUserVideo.name = uid.ToString();
         newUserVideo.transform.SetParent(spawnPoint, false);
-        newUserVideo.transform.rotation = Quaternion.Euler(Vector3.right * -180);
+        //newUserVideo.transform.rotation = Quaternion.Euler(Vector3.right * -180);
 
         playerVideoList.Add(newUserVideo);
 

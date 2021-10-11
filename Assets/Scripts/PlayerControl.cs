@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Cinemachine;
 
 public class PlayerControl : Photon.MonoBehaviour, IPunObservable
 {
@@ -34,6 +35,12 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         transform.GetComponent<Rigidbody2D>();
         transform.GetComponent<Animator>();
         NickName.text = PV.owner.NickName;
+        if (PV.isMine)
+        {
+            var CM = GameObject.Find("CMCamera").GetComponent<CinemachineVirtualCamera>();
+            CM.Follow = transform;
+            CM.LookAt = transform;
+        }
 
     }
     private void Start()
@@ -84,8 +91,8 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         }
         else
         {
-            transform.position = Vector3.Slerp(transform.position, curPos, Time.deltaTime * 10f);
-            transform.rotation = Quaternion.Slerp(transform.rotation, curRot, Time.deltaTime * 10f);
+            transform.position = Vector3.Slerp(transform.position, curPos, Time.deltaTime * 40f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, curRot, Time.deltaTime * 40f);
             
         }
     }
@@ -102,13 +109,13 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         {
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
-            //stream.SendNext(transform.GetComponent<Rigidbody2D>().velocity);
+            stream.SendNext(transform.GetComponent<Rigidbody2D>().velocity);
         }
         else
         {
             curPos = (Vector3)stream.ReceiveNext();
             curRot = (Quaternion)stream.ReceiveNext();
-            //transform.GetComponent<Rigidbody2D>().velocity = (Vector2)stream.ReceiveNext();
+            transform.GetComponent<Rigidbody2D>().velocity = (Vector2)stream.ReceiveNext();
         }
     }
 }
