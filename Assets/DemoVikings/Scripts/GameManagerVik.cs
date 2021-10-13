@@ -39,7 +39,7 @@ public class GameManagerVik : Photon.MonoBehaviour {
         // Spawn our local player
         PhotonNetwork.Instantiate(this.playerPrefabName, Vector2.zero, Quaternion.identity, 0, objs);
     }
-
+    /*
     void OnGUI()
     {
         if (PhotonNetwork.room == null) return; //Only display this GUI when inside a room
@@ -49,7 +49,7 @@ public class GameManagerVik : Photon.MonoBehaviour {
             PhotonNetwork.LeaveRoom();
         }
     }
-
+    */
     void OnDisconnectedFromPhoton()
     {
         Debug.LogWarning("OnDisconnectedFromPhoton");

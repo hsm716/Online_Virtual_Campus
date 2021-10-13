@@ -9,10 +9,7 @@ public class Launcher : MonoBehaviour
     public GameObject MainMenu;
 
     public InputField PlayerNameInput;
-
-    public GameObject ChatList;
-    public List<string> messages = new List<string>();
-
+    public GameObject ChatUI;
     private void Awake()
     {
         if (!PhotonNetwork.connected)
@@ -52,6 +49,7 @@ public class Launcher : MonoBehaviour
             PhotonNetwork.playerName = PlayerNameInput.text;
             MainMenu.SetActive(false);
             PhotonNetwork.CreateRoom(roomName, new RoomOptions() { MaxPlayers = 20 }, TypedLobby.Default);
+            ChatUI.SetActive(true);
         }
         else //if already room exists, join that room
         {
@@ -59,6 +57,7 @@ public class Launcher : MonoBehaviour
             PhotonNetwork.playerName = PlayerNameInput.text;
             MainMenu.SetActive(false);
             PhotonNetwork.JoinRoom(roomName);
+            ChatUI.SetActive(true);
         }
     }
 

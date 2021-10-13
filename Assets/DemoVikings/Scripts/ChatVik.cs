@@ -101,7 +101,7 @@ public class ChatVik : Photon.MonoBehaviour
             chatInput = "";
         }
     }
-
+    /*
     void OnLeftRoom()
     {
         this.enabled = false;
@@ -115,4 +115,5 @@ public class ChatVik : Photon.MonoBehaviour
     {
         this.enabled = true;
     }
+    */
 }
