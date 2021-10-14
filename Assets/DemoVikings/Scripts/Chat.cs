@@ -33,18 +33,18 @@ public class Chat : Photon.MonoBehaviour
 
     void SendChat()
     {
-        //photonView.RPC("SendChatMessage", PhotonTargets.All, chatInput.text);   // error when one player in game.
-        SendChatMessage(chatInput.text);
+        photonView.RPC("SendChatMessage", PhotonTargets.All, chatInput.text);   // error when one player in game.
+        //SendChatMessage(chatInput.text);
         chatInput.text = "";
         
     }
 
-    //[PunRPC]
-    //void SendChatMessage(string text, PhotonMessageInfo info)
-    void SendChatMessage(string text)
+    [PunRPC]
+    void SendChatMessage(string text, PhotonMessageInfo info)
+    //void SendChatMessage(string text)
     {
-        //AddMessage("[" + info.sender + "] " + text);
-        AddMessage(text);
+        AddMessage("[" + info.sender + "] " + text);
+        //AddMessage(text);
     }
 
     public void AddMessage(string text)
@@ -66,16 +66,20 @@ public class Chat : Photon.MonoBehaviour
 
     public void Fold()
     {
-        ChatList.SetActive(false);
-        chatInput.gameObject.SetActive(false);
+        //ChatList.SetActive(false);
+        //chatInput.gameObject.SetActive(false);
+        ChatList.transform.localScale = new Vector3(1, 0, 1);
+        chatInput.transform.localScale = new Vector3(1, 0, 1);
         FoldButton.SetActive(false);
         SpreadButton.SetActive(true);
     }
 
     public void Spread()
     {
-        ChatList.SetActive(true);
-        chatInput.gameObject.SetActive(true);
+        //ChatList.SetActive(true);
+        //chatInput.gameObject.SetActive(true);
+        ChatList.transform.localScale = new Vector3(1, 1, 1);
+        chatInput.transform.localScale = new Vector3(1, 1, 1);
         FoldButton.SetActive(true);
         SpreadButton.SetActive(false);
     }
