@@ -13,6 +13,8 @@ public class Chat : Photon.MonoBehaviour
     public GameObject FoldButton;
     public GameObject SpreadButton;
 
+    public PhotonView PV;
+
     private void Start()
     {
         for (int i = 0; i < messages.Count; i++)
@@ -33,15 +35,16 @@ public class Chat : Photon.MonoBehaviour
 
     void SendChat()
     {
-        photonView.RPC("SendChatMessage", PhotonTargets.All, chatInput.text);   // error when one player in game.
+        PV.RPC("SendChatMessage", PhotonTargets.All, chatInput.text);   // error when one player in game.
         //SendChatMessage(chatInput.text);
         chatInput.text = "";
         
     }
 
+    //void SendChatMessage(string text)
+
     [PunRPC]
     void SendChatMessage(string text, PhotonMessageInfo info)
-    //void SendChatMessage(string text)
     {
         AddMessage("[" + info.sender + "] " + text);
         //AddMessage(text);
