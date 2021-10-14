@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Cinemachine;
 
 public class PlayerControl : Photon.MonoBehaviour, IPunObservable
 {
@@ -42,6 +43,12 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         {
             myUI.SetActive(false);
             transform.GetChild(0).gameObject.SetActive(true);
+        }
+        else
+        {
+            var CM = GameObject.Find("CMCamera").GetComponent<CinemachineVirtualCamera>();
+            CM.Follow = transform;
+            CM.LookAt = transform;
         }
     }
 
