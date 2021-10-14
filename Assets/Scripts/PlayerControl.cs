@@ -26,16 +26,17 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
 
 
     public GameObject myUI;
-
+    private Rigidbody2D rgbd2d;
+    private Animator anim;
     
 
     private void Awake()
     {
         
-        transform.GetComponent<Rigidbody2D>();
-        transform.GetComponent<Animator>();
-        NickName.text = PV.owner.NickName;
 
+        NickName.text = PV.owner.NickName;
+        rgbd2d = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
     private void Start()
     {
@@ -46,6 +47,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         }
         else
         {
+            
             var CM = GameObject.Find("CMCamera").GetComponent<CinemachineVirtualCamera>();
             CM.Follow = transform;
             CM.LookAt = transform;
@@ -90,16 +92,19 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         }
         else
         {
-            transform.position = Vector3.Slerp(transform.position, curPos, Time.deltaTime * 10f);
-            transform.rotation = Quaternion.Slerp(transform.rotation, curRot, Time.deltaTime * 10f);
+            transform.position = Vector3.Slerp(transform.position, curPos, Time.deltaTime*10f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, curRot, Time.deltaTime*10f);
             
         }
     }
 
     private void FixedUpdate()
     {
+        rgbd2d.velocity = Vector2.zero;
+        rgbd2d.angularVelocity =0f;
         Vector2 moveVec = isHorizontalMove ? new Vector2(h, 0) : new Vector2(0, v);
-        transform.GetComponent<Rigidbody2D>().velocity = moveVec * Speed;
+        rgbd2d.MovePosition(rgbd2d.position + moveVec * Speed * Time.fixedDeltaTime);
+        //transform.GetComponent<Rigidbody2D>().velocity = moveVec * Speed;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
