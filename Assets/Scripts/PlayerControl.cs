@@ -27,7 +27,8 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
 
     public GameObject myUI;
 
-    
+    public GameObject Bubble;
+    public Text bubbleText;
 
     private void Awake()
     {
@@ -102,6 +103,22 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         transform.GetComponent<Rigidbody2D>().velocity = moveVec * Speed;
     }
 
+    /////
+    public void BubbleBubble(string chatText)
+    {
+        StopAllCoroutines();
+        Bubble.SetActive(true);
+        bubbleText.text = chatText;
+        StartCoroutine(BubbleOff());
+    }
+
+    IEnumerator BubbleOff()
+    {
+        yield return new WaitForSeconds(3f);
+        Bubble.SetActive(false);
+    }
+    /////
+    
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.isWriting)

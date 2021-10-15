@@ -14,6 +14,7 @@ public class Chat : Photon.MonoBehaviour
     public GameObject SpreadButton;
 
     public PhotonView PV;
+    public int viewID = 0;
 
     private void Start()
     {
@@ -22,12 +23,20 @@ public class Chat : Photon.MonoBehaviour
             ChatList.transform.GetChild(i).GetComponent<Text>().text = "";
         }
 
-        this.gameObject.SetActive(false);
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject p in players)
+        {
+            if (p.GetComponent<PhotonView>().isMine)   //자신만
+            {
+                viewID = p.GetComponent<PhotonView>().viewID;
+            }
+        }
     }
 
     public void ChatInput() //edit call
     {
-        if(chatInput.text.Length > 0)
+        if (chatInput.text.Length > 0)
         {
             SendChat();
         }
@@ -35,18 +44,15 @@ public class Chat : Photon.MonoBehaviour
 
     void SendChat()
     {
-        PV.RPC("SendChatMessage", PhotonTargets.All, chatInput.text);   // error when one player in game.
-        //SendChatMessage(chatInput.text);
+        PV.RPC("SendChatMessage", PhotonTargets.All, chatInput.text, viewID);   // error when one player in game.
         chatInput.text = "";
-        
     }
 
-    //void SendChatMessage(string text)
-
     [PunRPC]
-    void SendChatMessage(string text, PhotonMessageInfo info)
+    void SendChatMessage(string text, int viewID, PhotonMessageInfo info)
     {
         AddMessage("[" + info.sender + "] " + text);
+        BubbleOn(viewID);
         //AddMessage(text);
     }
 
@@ -64,6 +70,19 @@ public class Chat : Photon.MonoBehaviour
         for (int i = messages.Count - 1; i >= 0; i--)
         {
             ChatList.transform.GetChild(i).GetComponent<Text>().text = messages[i];
+        }
+    }
+
+    void BubbleOn(int viewID)
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject p in players)
+        {
+            if (p.GetComponent<PlayerControl>().PV.viewID == viewID)
+            {
+                p.GetComponent<PlayerControl>().BubbleBubble(chatInput.text);
+            }
         }
     }
 
