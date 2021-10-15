@@ -33,6 +33,12 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     private Rigidbody2D rgbd2d;
     private Animator anim;
 
+    public SpriteRenderer SR;
+    
+    Vector2 moveVec;
+
+
+
     private void Awake()
     {
 
@@ -65,33 +71,55 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             h = Input.GetAxisRaw("Horizontal");
             v = Input.GetAxisRaw("Vertical");
 
-            bool hDown = Input.GetButtonDown("Horizontal");
-            bool vDown = Input.GetButtonDown("Vertical");
-            bool hUp = Input.GetButtonUp("Horizontal");
-            bool vUp = Input.GetButtonUp("Vertical");
-
-            if (hDown)
-                isHorizontalMove = true;
-            else if (vDown)
-                isHorizontalMove = false;
-            else if (hUp || vUp)
-                isHorizontalMove = h != 0;
-
-
-           /* if (anim.GetInteger("hAxisRaw") != h)
+            if(h != 0)
             {
-                anim.SetBool("isChange", true);
-                anim.SetInteger("hAxisRaw", (int)h);
-            }
-            else if (anim.GetInteger("vAxisRaw") != v)
-            {
-                anim.SetBool("isChange", true);
-                anim.SetInteger("vAxisRaw", (int)v);
+                anim.SetBool("isRun", true);
+                PV.RPC("FlipX", PhotonTargets.All,h);
             }
             else
             {
-                anim.SetBool("isChange", false);
-            }*/
+                anim.SetBool("isRun", false);
+            }
+
+            if (v > 0)
+            {
+                anim.SetBool("isRun_back", true);
+                PV.RPC("FlipX", PhotonTargets.All, h*-1);
+            }
+            else
+            {
+                anim.SetBool("isRun_back", false);
+                anim.SetBool("isRun", true);
+            }
+
+
+            /*            bool hDown = Input.GetButtonDown("Horizontal");
+                        bool vDown = Input.GetButtonDown("Vertical");
+                        bool hUp = Input.GetButtonUp("Horizontal");
+                        bool vUp = Input.GetButtonUp("Vertical");*/
+
+            /*            if (hDown)
+                            isHorizontalMove = true;
+                        else if (vDown)
+                            isHorizontalMove = false;
+                        else if (hUp || vUp)
+                            isHorizontalMove = h != 0;*/
+
+
+            /* if (anim.GetInteger("hAxisRaw") != h)
+             {
+                 anim.SetBool("isChange", true);
+                 anim.SetInteger("hAxisRaw", (int)h);
+             }
+             else if (anim.GetInteger("vAxisRaw") != v)
+             {
+                 anim.SetBool("isChange", true);
+                 anim.SetInteger("vAxisRaw", (int)v);
+             }
+             else
+             {
+                 anim.SetBool("isChange", false);
+             }*/
         }
         else
         {
@@ -100,13 +128,20 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
 
         }
     }
-
+    [PunRPC]
+    void FlipX(float axis)
+    {
+        SR.flipX = axis == -1;
+    }
     private void FixedUpdate()
     {
         rgbd2d.velocity = Vector2.zero;
         rgbd2d.angularVelocity =0f;
-        Vector2 moveVec = isHorizontalMove ? new Vector2(h, 0) : new Vector2(0, v);
-        rgbd2d.MovePosition(rgbd2d.position + moveVec * Speed * Time.fixedDeltaTime);
+       
+        moveVec.Set(h,v);
+       
+        //isHorizontalMove ? new Vector2(h, 0) : new Vector2(0, v);
+        rgbd2d.MovePosition(rgbd2d.position + moveVec.normalized * Speed * Time.fixedDeltaTime);
         //transform.GetComponent<Rigidbody2D>().velocity = moveVec * Speed;
     }
 
