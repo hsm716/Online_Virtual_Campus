@@ -52,7 +52,7 @@ public class Chat : Photon.MonoBehaviour
     void SendChatMessage(string text, int viewID, PhotonMessageInfo info)
     {
         AddMessage("[" + info.sender + "] " + text);
-        BubbleOn(viewID);
+        BubbleOn(viewID, text);
         //AddMessage(text);
     }
 
@@ -73,7 +73,7 @@ public class Chat : Photon.MonoBehaviour
         }
     }
 
-    void BubbleOn(int viewID)
+    void BubbleOn(int viewID, string text)
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
@@ -81,7 +81,7 @@ public class Chat : Photon.MonoBehaviour
         {
             if (p.GetComponent<PlayerControl>().PV.viewID == viewID)
             {
-                p.GetComponent<PlayerControl>().BubbleBubble(chatInput.text);
+                p.GetComponent<PlayerControl>().BubbleBubble(text);
             }
         }
     }
