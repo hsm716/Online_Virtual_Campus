@@ -30,6 +30,9 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     public GameObject Bubble;
     public Text bubbleText;
 
+    private Rigidbody2D rgbd2d;
+    private Animator anim;
+
     private void Awake()
     {
 
