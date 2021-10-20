@@ -1550,6 +1550,7 @@ GameObject:
   - component: {fileID: 5557379852465940864}
   - component: {fileID: 3668659494807214773}
   - component: {fileID: 4124764631484488956}
+  - component: {fileID: 7163003802506029477}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1748,6 +1749,33 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7163003802506029477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7853321560197268978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 044ca4887e39a8b4b8263e538e091c0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 2
+    Name: isRun
+  - Type: 4
+    SynchronizeType: 2
+    Name: isRun_back
+  - Type: 4
+    SynchronizeType: 2
+    Name: isRun_mid
+  m_SynchronizeLayers:
+  - SynchronizeType: 2
+    LayerIndex: 0
 --- !u!1 &8096272685783491231
 GameObject:
   m_ObjectHideFlags: 0

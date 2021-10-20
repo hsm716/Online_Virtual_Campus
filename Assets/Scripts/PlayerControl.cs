@@ -97,8 +97,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
                 anim.SetBool("isRun_mid", true);
                 anim.SetBool("isRun", true);
             }
-            if(anim.GetBool("isRun_back")==true)
-                PV.RPC("FlipX", PhotonTargets.All, h * -1);
+
 
 
             bool hDown = Input.GetButtonDown("Horizontal");
