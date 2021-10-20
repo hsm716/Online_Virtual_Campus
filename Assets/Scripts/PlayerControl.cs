@@ -84,27 +84,40 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             if (v > 0)
             {
                 anim.SetBool("isRun_back", true);
-                PV.RPC("FlipX", PhotonTargets.All, h*-1);
+                anim.SetBool("isRun_mid", true);
+                
+            }
+            else if (v == 0)
+            {
+                anim.SetBool("isRun_mid", false);
             }
             else
             {
                 anim.SetBool("isRun_back", false);
+                anim.SetBool("isRun_mid", true);
                 anim.SetBool("isRun", true);
             }
+            if(anim.GetBool("isRun_back")==true)
+                PV.RPC("FlipX", PhotonTargets.All, h * -1);
 
 
-            /*            bool hDown = Input.GetButtonDown("Horizontal");
-                        bool vDown = Input.GetButtonDown("Vertical");
-                        bool hUp = Input.GetButtonUp("Horizontal");
-                        bool vUp = Input.GetButtonUp("Vertical");*/
+            bool hDown = Input.GetButtonDown("Horizontal");
+            bool vDown = Input.GetButtonDown("Vertical");
+            bool hUp = Input.GetButtonUp("Horizontal");
+            bool vUp = Input.GetButtonUp("Vertical");
 
-            /*            if (hDown)
-                            isHorizontalMove = true;
-                        else if (vDown)
-                            isHorizontalMove = false;
-                        else if (hUp || vUp)
-                            isHorizontalMove = h != 0;*/
+            if (hDown)
+                isHorizontalMove = true;
+            else if (vDown)
+                isHorizontalMove = false;
+            else if (hUp || vUp)
+                isHorizontalMove = h != 0;
 
+            if (isHorizontalMove == true)
+            {
+                anim.SetBool("isRun_mid", false);
+            }
+            
 
             /* if (anim.GetInteger("hAxisRaw") != h)
              {
@@ -138,7 +151,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         rgbd2d.velocity = Vector2.zero;
         rgbd2d.angularVelocity =0f;
        
-        moveVec.Set(h,v);
+        moveVec = isHorizontalMove ? new Vector2(h, 0) : new Vector2(0, v);
        
         //isHorizontalMove ? new Vector2(h, 0) : new Vector2(0, v);
         rgbd2d.MovePosition(rgbd2d.position + moveVec.normalized * Speed * Time.fixedDeltaTime);

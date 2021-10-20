@@ -29,6 +29,30 @@ TextureImporter:
   - first:
       213: 664824672368292136
     second: run_back 1_8
+  - first:
+      213: 8392239171637143259
+    second: run_back_middle_0
+  - first:
+      213: 8712122676762151012
+    second: run_back_middle_1
+  - first:
+      213: 569921623419324699
+    second: run_back_middle_2
+  - first:
+      213: 7511844067529152804
+    second: run_back_middle_3
+  - first:
+      213: -6660838059003556883
+    second: run_back_middle_4
+  - first:
+      213: -2019189663258662332
+    second: run_back_middle_5
+  - first:
+      213: 4663450011149596527
+    second: run_back_middle_6
+  - first:
+      213: 50293423343905228
+    second: run_back_middle_7
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -72,7 +96,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -150,12 +174,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: run_back 1_0
+      name: run_back_middle_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 8
         y: 0
-        width: 48
+        width: 32
         height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -164,40 +188,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 382cf4bb2ec91f4d0800000000000000
-      internalID: -3102526170662452605
+      spriteID: bd6ec870019377470800000000000000
+      internalID: 8392239171637143259
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: run_back 1_1
+      name: run_back_middle_1
       rect:
         serializedVersion: 2
-        x: 0
+        x: 56
         y: 0
-        width: 48
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2c5a7c6c041ee53b0800000000000000
-      internalID: -5521728424780519998
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: run_back 1_2
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 0
-        width: 48
+        width: 32
         height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -206,19 +209,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 30d450a96602d2510800000000000000
-      internalID: 1525911473791257859
+      spriteID: 468880c6a6da7e870800000000000000
+      internalID: 8712122676762151012
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: run_back 1_3
+      name: run_back_middle_2
       rect:
         serializedVersion: 2
-        x: 96
+        x: 104
         y: 0
-        width: 48
+        width: 32
         height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -227,19 +230,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 44af9029860a52060800000000000000
-      internalID: 6928119972766546500
+      spriteID: b1909b962b4c8e700800000000000000
+      internalID: 569921623419324699
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: run_back 1_4
+      name: run_back_middle_3
       rect:
         serializedVersion: 2
-        x: 144
+        x: 152
         y: 0
-        width: 48
+        width: 32
         height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -248,19 +251,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 12087d832b6865880800000000000000
-      internalID: -8622556336538288095
+      spriteID: 4295335416e6f3860800000000000000
+      internalID: 7511844067529152804
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: run_back 1_5
+      name: run_back_middle_4
       rect:
         serializedVersion: 2
-        x: 192
+        x: 200
         y: 0
-        width: 48
+        width: 32
         height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -269,19 +272,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: aa2c7b86e23511960800000000000000
-      internalID: 7570923907376988842
+      spriteID: debc0b27313ff83a0800000000000000
+      internalID: -6660838059003556883
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: run_back 1_6
+      name: run_back_middle_5
       rect:
         serializedVersion: 2
-        x: 240
+        x: 248
         y: 0
-        width: 48
+        width: 32
         height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -290,19 +293,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3c9e814bb7643bfc0800000000000000
-      internalID: -3480360589910808125
+      spriteID: 44aa35b03b56af3e0800000000000000
+      internalID: -2019189663258662332
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: run_back 1_7
+      name: run_back_middle_6
       rect:
         serializedVersion: 2
-        x: 288
+        x: 296
         y: 0
-        width: 48
+        width: 32
         height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -311,19 +314,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f39c4fbb4ab8f0430800000000000000
-      internalID: 3751370554267191615
+      spriteID: f67fc5eb317e7b040800000000000000
+      internalID: 4663450011149596527
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: run_back 1_8
+      name: run_back_middle_7
       rect:
         serializedVersion: 2
-        x: 336
+        x: 344
         y: 0
-        width: 48
+        width: 32
         height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -332,8 +335,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8217d62648ee93900800000000000000
-      internalID: 664824672368292136
+      spriteID: cc9a3f02a9da2b000800000000000000
+      internalID: 50293423343905228
       vertices: []
       indices: 
       edges: []
