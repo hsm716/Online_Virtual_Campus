@@ -30,4 +30,5 @@ MonoBehaviour:
   RpcList:
   - InvitePlayerToPartyChannel
   - SendChatMessage
+  - FlipX
   DisableAutoOpenWizard: 1
