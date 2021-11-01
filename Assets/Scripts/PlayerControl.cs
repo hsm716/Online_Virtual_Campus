@@ -37,7 +37,19 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     
     Vector2 moveVec;
 
-    public Joystick joystick;
+    //Mobile Key Var
+    int up_Value;
+    int down_Value;
+    int left_Value;
+    int right_Value;
+    bool up_Down;
+    bool down_Down;
+    bool left_Down;
+    bool right_Down;
+    bool up_Up;
+    bool down_Up;
+    bool left_Up;
+    bool right_Up;
 
     private void Awake()
     {
@@ -70,48 +82,14 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         {
             //h = Input.GetAxisRaw("Horizontal");
             //v = Input.GetAxisRaw("Vertical");
-            //h = joystick.Horizontal;
-            //v = joystick.Vertical;
+            
+            h = Input.GetAxisRaw("Horizontal") + right_Value + left_Value;
+            v = Input.GetAxisRaw("Vertical") + up_Value + down_Value;
 
-            bool hDown = false;
-            bool vDown = false;
-            bool hUp = false;
-            bool vUp = false;
-
-            if (Mathf.Abs(joystick.Horizontal) > Mathf.Abs(joystick.Vertical))
-            {
-                v = 0;
-                if (joystick.Horizontal >= 0)
-                {
-                    hUp = true;
-                    h = 1;
-                }
-                else if (joystick.Horizontal <= 0)
-                {
-                    hDown = true;
-                    h = -1;
-                }
-            }
-            else if (Mathf.Abs(joystick.Horizontal) < Mathf.Abs(joystick.Vertical))
-            {
-                h = 0;
-                if (joystick.Vertical >= 0)
-                {
-                    vUp = true;
-                    v = 1;
-                }
-                else if (joystick.Vertical <= 0)
-                {
-                    vDown = true;
-                    v = -1;
-                }
-            }
-            else
-            {
-                h = 0;
-                v = 0;
-            }
-
+            bool hDown = Input.GetButtonDown("Horizontal") || left_Down || right_Down;
+            bool vDown = Input.GetButtonDown("Vertical") || up_Down || down_Down;
+            bool hUp = Input.GetButtonUp("Horizontal") || left_Up || right_Up;
+            bool vUp = Input.GetButtonUp("Vertical") || up_Up || down_Up;
 
 
             if (h != 0)
@@ -141,7 +119,15 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
                 anim.SetBool("isRun", true);
             }
 
-
+            //Mobile Var Init
+            up_Down = false;
+            down_Down = false;
+            left_Down = false;
+            right_Down = false;
+            up_Up = false;
+            down_Up = false;
+            left_Up = false;
+            right_Up = false;
 
 
 
@@ -197,6 +183,52 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         //transform.GetComponent<Rigidbody2D>().velocity = moveVec * Speed;
     }
 
+    public void ButtonDown(string type)
+    {
+        switch (type)
+        {
+            case "U":
+                up_Value = 1;
+                up_Down = true;
+                break;
+            case "D":
+                down_Value = -1;
+                down_Down = true;
+                break;
+            case "L":
+                left_Value = -1;
+                left_Down = true;
+                break;
+            case "R":
+                right_Value = 1;
+                right_Down = true;
+                break;
+
+        }
+    }
+    public void ButtonUp(string type)
+    {
+        switch (type)
+        {
+            case "U":
+                up_Value = 0;
+                up_Up = true;
+                break;
+            case "D":
+                down_Value = 0;
+                down_Up = true;
+                break;
+            case "L":
+                left_Value = 0;
+                left_Up = true;
+                break;
+            case "R":
+                right_Value = 0;
+                right_Up = true;
+                break;
+
+        }
+    }
     /////
     public void BubbleBubble(string chatText)
     {
