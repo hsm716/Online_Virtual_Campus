@@ -37,7 +37,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     
     Vector2 moveVec;
 
-
+    public Joystick joystick;
 
     private void Awake()
     {
@@ -68,10 +68,53 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     {
         if (PV.isMine)
         {
-            h = Input.GetAxisRaw("Horizontal");
-            v = Input.GetAxisRaw("Vertical");
+            //h = Input.GetAxisRaw("Horizontal");
+            //v = Input.GetAxisRaw("Vertical");
+            //h = joystick.Horizontal;
+            //v = joystick.Vertical;
 
-            if(h != 0)
+            bool hDown = false;
+            bool vDown = false;
+            bool hUp = false;
+            bool vUp = false;
+
+            if (Mathf.Abs(joystick.Horizontal) > Mathf.Abs(joystick.Vertical))
+            {
+                v = 0;
+                if (joystick.Horizontal >= 0)
+                {
+                    hUp = true;
+                    h = 1;
+                }
+                else if (joystick.Horizontal <= 0)
+                {
+                    hDown = true;
+                    h = -1;
+                }
+            }
+            else if (Mathf.Abs(joystick.Horizontal) < Mathf.Abs(joystick.Vertical))
+            {
+                h = 0;
+                if (joystick.Vertical >= 0)
+                {
+                    vUp = true;
+                    v = 1;
+                }
+                else if (joystick.Vertical <= 0)
+                {
+                    vDown = true;
+                    v = -1;
+                }
+            }
+            else
+            {
+                h = 0;
+                v = 0;
+            }
+
+
+
+            if (h != 0)
             {
                 anim.SetBool("isRun", true);
                 PV.RPC("FlipX", PhotonTargets.All,h);
@@ -100,10 +143,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
 
 
 
-            bool hDown = Input.GetButtonDown("Horizontal");
-            bool vDown = Input.GetButtonDown("Vertical");
-            bool hUp = Input.GetButtonUp("Horizontal");
-            bool vUp = Input.GetButtonUp("Vertical");
+
 
             if (hDown)
                 isHorizontalMove = true;
