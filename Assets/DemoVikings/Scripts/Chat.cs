@@ -76,11 +76,13 @@ public class Chat : Photon.MonoBehaviour
     void BubbleOn(int viewID, string text)
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-
+        Debug.Log("테스트");
+        Debug.Log("" + viewID);
         foreach (GameObject p in players)
         {
             if (p.GetComponent<PlayerControl>().PV.viewID == viewID)
             {
+                
                 p.GetComponent<PlayerControl>().BubbleBubble(text);
             }
         }
