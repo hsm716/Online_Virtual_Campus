@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 /* NOTE: 
  *
@@ -27,6 +28,8 @@ public class PartyJoiner : Photon.MonoBehaviour
     private string remoteInviteChannelName = null;
 
     private AgoraVideoChat agoraVideo;
+
+    public List<GameObject> PartyPlayerList;    //파티에 속해있는 사람의 리스트
 
     private void Awake()
     {
@@ -131,11 +134,37 @@ public class PartyJoiner : Photon.MonoBehaviour
         }
     }
 
+    [PunRPC]
+    public void ListUpdate(int invitedID, string channelName)
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject p in players)
+        {
+            if (p.GetComponent<AgoraVideoChat>().GetCurrentChannel() == channelName)
+            {
+                PartyPlayerList.Clear();
+
+            }
+        }
+        foreach (GameObject p in players)
+        {
+            if (p.GetComponent<AgoraVideoChat>().GetCurrentChannel() == channelName)
+            {
+                PartyPlayerList.Add(p);
+
+            }
+        }
+    }
+
     public void OnJoinButtonPress()
     {
         if (photonView.isMine && remoteInviteChannelName != null)
         {
             agoraVideo.JoinRemoteChannel(remoteInviteChannelName);
+
+            photonView.RPC("ListUpdate", PhotonTargets.All, photonView.viewID, agoraVideo.GetCurrentChannel());
+
             joinButton.SetActive(false);
             leaveButton.SetActive(true);
         }

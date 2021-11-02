@@ -31,4 +31,5 @@ MonoBehaviour:
   - InvitePlayerToPartyChannel
   - SendChatMessage
   - FlipX
+  - ListUpdate
   DisableAutoOpenWizard: 1
