@@ -244,6 +244,112 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         Bubble.SetActive(false);
     }
     /////
+    ///
+
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.CompareTag("과기대1"))
+        {
+
+        }
+        if (col.CompareTag("과기대2"))
+        {
+
+        }
+        if (col.CompareTag("호연사관"))
+        {
+
+        }
+        if (col.CompareTag("IPARK"))
+        {
+
+        }
+        if (col.CompareTag("종합운동장"))
+        {
+
+        }
+        if (col.CompareTag("극장"))
+        {
+
+        }
+        if (col.CompareTag("가속기ICT융합관"))
+        {
+
+        }
+        if (col.CompareTag("산학협력관"))
+        {
+
+        }
+        if (col.CompareTag("농심국제관"))
+        {
+
+        }
+        if (col.CompareTag("호상"))
+        {
+
+        }
+        if (col.CompareTag("주차장"))
+        {
+
+        }
+        if (col.CompareTag("정문"))
+        {
+
+        }
+        if (col.CompareTag("학생회관"))
+        {
+
+        }
+        if (col.CompareTag("공공정책관"))
+        {
+
+        }
+        if (col.CompareTag("행정관"))
+        {
+
+        }
+        if (col.CompareTag("석원경상관"))
+        {
+
+        }
+        if (col.CompareTag("학군단"))
+        {
+
+        }
+        if (col.CompareTag("문화스포츠관"))
+        {
+
+        }
+        if (col.CompareTag("체육관"))
+        {
+
+        }
+        if (col.CompareTag("동문운동장"))
+        {
+
+        }
+        if (col.CompareTag("호익플라자"))
+        {
+
+        }
+        if (col.CompareTag("약학대"))
+        {
+
+        }
+        if (col.CompareTag("중앙광장"))
+        {
+
+        }
+        if (col.CompareTag("학술정보원"))
+        {
+
+        }
+        if (col.CompareTag("고미사"))
+        {
+
+        }
+    }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
