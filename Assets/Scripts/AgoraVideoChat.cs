@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine; 
+using UnityEngine;
+using UnityEngine.Android;
 using agora_gaming_rtc;
 
 
@@ -58,6 +59,10 @@ public class AgoraVideoChat : Photon.MonoBehaviour
 
         // -- These are all necessary steps to initialize the Agora engine -- //
         // Initialize Agora engine
+
+
+
+
         mRtcEngine = IRtcEngine.GetEngine(appID);
 
         // Setup square video profile
