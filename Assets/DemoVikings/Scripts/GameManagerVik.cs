@@ -7,6 +7,7 @@ public class GameManagerVik : Photon.MonoBehaviour {
     // read the documentation for info how to spawn dynamically loaded game objects at runtime (not using Resources folders)
     public string playerPrefabName = "Charprefab";
     public GameObject ChatUI;
+    public Launcher lc;
     void OnJoinedRoom()
     {
         StartGame();
@@ -37,7 +38,8 @@ public class GameManagerVik : Photon.MonoBehaviour {
         objs[0] = enabledRenderers;
 
         // Spawn our local player
-        PhotonNetwork.Instantiate(this.playerPrefabName, Vector2.zero, Quaternion.identity, 0, objs);
+        GameObject go = PhotonNetwork.Instantiate(this.playerPrefabName, Vector2.zero, Quaternion.identity, 0, objs);
+        go.GetComponent<PlayerControl>().grade = lc.selected_grade;
         ChatUI.SetActive(true);
     }
     /*

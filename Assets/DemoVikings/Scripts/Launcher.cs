@@ -9,7 +9,8 @@ public class Launcher : MonoBehaviour
     public GameObject MainMenu;
 
     public InputField PlayerNameInput;
-    
+    public int selected_grade;
+    public Text grade_txt;
     private void Awake()
     {
         if (!PhotonNetwork.connected)
@@ -47,6 +48,7 @@ public class Launcher : MonoBehaviour
         {
             PlayerPrefs.SetString("username", PlayerNameInput.text);
             PhotonNetwork.playerName = PlayerNameInput.text;
+            selected_grade = int.Parse(grade_txt.text);
             MainMenu.SetActive(false);
             PhotonNetwork.CreateRoom(roomName, new RoomOptions() { MaxPlayers = 20 }, TypedLobby.Default);
             

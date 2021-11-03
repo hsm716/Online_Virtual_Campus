@@ -51,7 +51,14 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     bool left_Up;
     bool right_Up;
 
+    public int grade;
     GameObject Location_text;
+
+    public Image grade_img;
+    public Sprite[] grade_sp;
+
+    public GameObject interaction_btn;
+
     private void Awake()
     {
 
@@ -81,6 +88,25 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     // Update is called once per frame
     void Update()
     {
+        switch (grade)
+        {
+            case 0:
+                break;
+
+            case 1:
+                grade_img.sprite = grade_sp[0];
+                break;
+            case 2:
+                grade_img.sprite = grade_sp[1];
+                break;
+            case 3:
+                grade_img.sprite = grade_sp[2];
+                break;
+
+            case 4:
+                grade_img.sprite = grade_sp[3];
+                break;
+        }
         if (PV.isMine)
         {
             //h = Input.GetAxisRaw("Horizontal");
@@ -256,110 +282,112 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         {
             Location_text.transform.GetChild(0).GetComponent<Text>().text = col.name;
         }
-        /*if (col.CompareTag("제1과기대"))
+        if (col.CompareTag("상호작용_구역"))
         {
+            interaction_btn.SetActive(true);
 
+            if (col.name =="제2과기대")
+            {
+
+            }
+            if ((col.name == "자유관"))
+            {
+                Application.OpenURL("https://dormitel.korea.ac.kr/ipsaUser/facilitiesImageList.do?site_id=hoyeon&facilitiesId=1&id=hoyeon_010402000000");
+            }
+            if ((col.name == "IPARK"))
+            {
+
+            }
+            if ((col.name == "종합운동장"))
+            {
+
+            }
+            if ((col.name == "극장"))
+            {
+
+            }
+            if ((col.name == "ICT가속"))
+            {
+
+            }
+            if ((col.name == "엘레베이터"))
+            {
+
+            }
+            if ((col.name == "산학협력"))
+            {
+
+            }
+            if ((col.name == "농심국제관"))
+            {
+
+            }
+            if ((col.name == "호상"))
+            {
+
+            }
+            if ((col.name == "주차장"))
+            {
+
+            }
+            if ((col.name == "정문"))
+            {
+
+            }
+            if ((col.name == "학생회관"))
+            {
+
+            }
+            if ((col.name == "공공정책관"))
+            {
+
+            }
+            if ((col.name == "행정관"))
+            {
+
+            }
+            if ((col.name == "석원경상"))
+            {
+
+            }
+            if ((col.name == "학군단"))
+            {
+
+            }
+            if ((col.name == "문화스포츠"))
+            {
+
+            }
+            if ((col.name == "체육과학관"))
+            {
+
+            }
+            if ((col.name == "동문운동장"))
+            {
+
+            }
+            if ((col.name == "호익플라자"))
+            {
+
+            }
+            if ((col.name == "약학대"))
+            {
+
+            }
+            if ((col.name == "중앙광장"))
+            {
+
+            }
+            if ((col.name == "학술정보원"))
+            {
+
+            }
+            if ((col.name == "고미사"))
+            {
+
+            }
         }
-        if (col.CompareTag("제2과기대"))
-        {
-
-        }
-        if (col.CompareTag("호연사관"))
-        {
-
-        }
-        if (col.CompareTag("IPARK"))
-        {
-
-        }
-        if (col.CompareTag("종합운동장"))
-        {
-
-        }
-        if (col.CompareTag("극장"))
-        {
-
-        }
-        if (col.CompareTag("ICT가속"))
-        {
-
-        }
-        if (col.CompareTag("엘레베이터"))
-        {
-
-        }
-        if (col.CompareTag("산학협력"))
-        {
-
-        }
-        if (col.CompareTag("농심국제관"))
-        {
-
-        }
-        if (col.CompareTag("호상"))
-        {
-
-        }
-        if (col.CompareTag("주차장"))
-        {
-
-        }
-        if (col.CompareTag("정문"))
-        {
-
-        }
-        if (col.CompareTag("학생회관"))
-        {
-
-        }
-        if (col.CompareTag("공공정책관"))
-        {
-
-        }
-        if (col.CompareTag("행정관"))
-        {
-
-        }
-        if (col.CompareTag("석원경상"))
-        {
-
-        }
-        if (col.CompareTag("학군단"))
-        {
-
-        }
-        if (col.CompareTag("문화스포츠"))
-        {
-
-        }
-        if (col.CompareTag("체육과학관"))
-        {
-
-        }
-        if (col.CompareTag("동문운동장"))
-        {
-
-        }
-        if (col.CompareTag("호익플라자"))
-        {
-
-        }
-        if (col.CompareTag("약학대"))
-        {
-
-        }
-        if (col.CompareTag("중앙광장"))
-        {
-
-        }
-        if (col.CompareTag("학술정보원"))
-        {
-
-        }
-        if (col.CompareTag("고미사"))
-        {
-
-        }*/
+       
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -368,12 +396,14 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         {
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
+            stream.SendNext(grade);
             //stream.SendNext(transform.GetComponent<Rigidbody2D>().velocity);
         }
         else
         {
             curPos = (Vector3)stream.ReceiveNext();
             curRot = (Quaternion)stream.ReceiveNext();
+            grade = (int)stream.ReceiveNext();
             //transform.GetComponent<Rigidbody2D>().velocity = (Vector2)stream.ReceiveNext();
         }
     }
