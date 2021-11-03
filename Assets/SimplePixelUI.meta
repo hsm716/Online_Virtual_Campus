@@ -1,8 +1,14 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/SimplePixelUI.meta
 guid: 1c320d6c50d72624085488f97303379e
 folderAsset: yes
 DefaultImporter:
+=======
+guid: 0c2a338e0bcdad146a7fc410ac64ff99
+NativeFormatImporter:
+>>>>>>> hsm:Assets/Materials/cafe2d.mat.meta
   externalObjects: {}
+  mainObjectFileID: 2100000
   userData: 
   assetBundleName: 
   assetBundleVariant: 
