@@ -29,8 +29,6 @@ public class PartyJoiner : Photon.MonoBehaviour
 
     private AgoraVideoChat agoraVideo;
 
-    public List<GameObject> PartyPlayerList;    //파티에 속해있는 사람의 리스트
-
     private void Awake()
     {
         agoraVideo = GetComponent<AgoraVideoChat>();
@@ -131,29 +129,6 @@ public class PartyJoiner : Photon.MonoBehaviour
         {
             joinButton.SetActive(true);
             remoteInviteChannelName = channelName;
-        }
-    }
-
-    [PunRPC]
-    public void ListUpdate(int invitedID, string channelName)
-    {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-
-        foreach (GameObject p in players)
-        {
-            if (p.GetComponent<AgoraVideoChat>().GetCurrentChannel() == channelName)
-            {
-                PartyPlayerList.Clear();
-
-            }
-        }
-        foreach (GameObject p in players)
-        {
-            if (p.GetComponent<AgoraVideoChat>().GetCurrentChannel() == channelName)
-            {
-                PartyPlayerList.Add(p);
-
-            }
         }
     }
 
