@@ -51,6 +51,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     bool left_Up;
     bool right_Up;
 
+    GameObject Location_text;
     private void Awake()
     {
 
@@ -72,6 +73,8 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             var CM = GameObject.Find("CMCamera").GetComponent<CinemachineVirtualCamera>();
             CM.Follow = transform;
             CM.LookAt = transform;
+            Location_text = GameObject.Find("Canvas").transform.GetChild(3).gameObject;
+            Location_text.SetActive(true);
         }
     }
 
@@ -249,11 +252,15 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.CompareTag("과기대1"))
+        if (col.CompareTag("Trigger_Check"))
+        {
+            Location_text.transform.GetChild(0).GetComponent<Text>().text = col.name;
+        }
+        /*if (col.CompareTag("제1과기대"))
         {
 
         }
-        if (col.CompareTag("과기대2"))
+        if (col.CompareTag("제2과기대"))
         {
 
         }
@@ -273,11 +280,15 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         {
 
         }
-        if (col.CompareTag("가속기ICT융합관"))
+        if (col.CompareTag("ICT가속"))
         {
 
         }
-        if (col.CompareTag("산학협력관"))
+        if (col.CompareTag("엘레베이터"))
+        {
+
+        }
+        if (col.CompareTag("산학협력"))
         {
 
         }
@@ -309,7 +320,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         {
 
         }
-        if (col.CompareTag("석원경상관"))
+        if (col.CompareTag("석원경상"))
         {
 
         }
@@ -317,11 +328,11 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         {
 
         }
-        if (col.CompareTag("문화스포츠관"))
+        if (col.CompareTag("문화스포츠"))
         {
 
         }
-        if (col.CompareTag("체육관"))
+        if (col.CompareTag("체육과학관"))
         {
 
         }
@@ -348,7 +359,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         if (col.CompareTag("고미사"))
         {
 
-        }
+        }*/
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

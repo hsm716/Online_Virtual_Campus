@@ -16,6 +16,8 @@ public class Chat : Photon.MonoBehaviour
     public PhotonView PV;
     public int viewID = 0;
 
+    public Text Location_txt;
+
     private void Start()
     {
         for (int i = 0; i < messages.Count; i++)
@@ -51,7 +53,7 @@ public class Chat : Photon.MonoBehaviour
     [PunRPC]
     void SendChatMessage(string text, int viewID, PhotonMessageInfo info)
     {
-        AddMessage("[" + info.sender + "] " + text);
+        AddMessage("[" + info.sender + "]{" + Location_txt.text + "}" + text);
         BubbleOn(viewID, text);
         //AddMessage(text);
     }
