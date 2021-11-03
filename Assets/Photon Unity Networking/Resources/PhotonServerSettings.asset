@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b51608f6a3a4584d87dc9aecf104cfd, type: 3}
   m_Name: PhotonServerSettings
   m_EditorClassIdentifier: 
-  AppID: 
+  AppID: 5344d3bf-3caa-4f8c-9b59-843fc4834a7a
   VoiceAppID: 
-  ChatAppID: 
-  HostType: 0
+  ChatAppID: 4348bc5b-9e12-40b1-a2b0-ebaecff9b581
+  HostType: 4
   PreferredRegion: 0
   EnabledRegions: -1
   Protocol: 0
@@ -27,5 +27,8 @@ MonoBehaviour:
   PunLogging: 0
   NetworkLogging: 1
   RunInBackground: 1
-  RpcList: []
+  RpcList:
+  - FlipX
+  - InvitePlayerToPartyChannel
+  - SendChatMessage
   DisableAutoOpenWizard: 1
