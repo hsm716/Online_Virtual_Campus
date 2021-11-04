@@ -47,14 +47,14 @@ public class Chat : Photon.MonoBehaviour
 
     void SendChat()
     {
-        PV.RPC("SendChatMessage", PhotonTargets.All, chatInput.text, viewID);   // error when one player in game.
+        PV.RPC("SendChatMessage", PhotonTargets.All, chatInput.text, viewID,Location_txt.text);   // error when one player in game.
         chatInput.text = "";
     }
 
     [PunRPC]
-    void SendChatMessage(string text, int viewID, PhotonMessageInfo info)
+    void SendChatMessage(string text, int viewID,string loc_text, PhotonMessageInfo info)
     {
-        AddMessage("[" + info.sender + "]{" + Location_txt.text + "}" + text);
+        AddMessage("[" + info.sender + "]{" + loc_text + "}" + text);
         BubbleOn(viewID, text);
         //AddMessage(text);
     }

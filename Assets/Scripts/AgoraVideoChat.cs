@@ -21,6 +21,7 @@ public class AgoraVideoChat : Photon.MonoBehaviour
 {
     [Header("Agora Properties")]
 
+    static public AgoraVideoChat instance;
     // *** ADD YOUR APP ID HERE BEFORE GETTING STARTED *** //
     [SerializeField] private string appID = "ADD YOUR APP ID HERE";
     [SerializeField] private string channel = "unity3d";
@@ -41,11 +42,12 @@ public class AgoraVideoChat : Photon.MonoBehaviour
 
     void Start()
     {
+       
         if (!photonView.isMine)
         {
             return;
         }
-            
+        instance = this;
 
         playerVideoList = new List<GameObject>();
 
@@ -283,7 +285,7 @@ public class AgoraVideoChat : Photon.MonoBehaviour
         }
     }
 
-    private void TerminateAgoraEngine()
+    public void TerminateAgoraEngine()
     {
         if (mRtcEngine != null)
         {

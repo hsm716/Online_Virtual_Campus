@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using Cinemachine;
 
 public class PlayerControl : Photon.MonoBehaviour, IPunObservable
@@ -411,6 +412,27 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
 
         }
     }
+
+    public GameObject setting_pannel;
+    public void Setting_btn()
+    {
+        setting_pannel.SetActive(true);
+    }
+    public void resume_btn()
+    {
+        setting_pannel.SetActive(false);
+    }
+    public void home_btn()
+    {
+        AgoraVideoChat.instance.TerminateAgoraEngine();
+        PhotonNetwork.LeaveRoom();
+        SceneManager.LoadScene("StartScene");
+    }
+    public void quit_btn()
+    {
+        Application.Quit();
+    }
+
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (col.CompareTag("Trigger_Check"))
