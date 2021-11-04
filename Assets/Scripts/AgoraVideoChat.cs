@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Android;
 using agora_gaming_rtc;
+using UnityEngine.UI;
 
 
 
@@ -42,13 +43,13 @@ public class AgoraVideoChat : Photon.MonoBehaviour
 
     void Start()
     {
-       
+        
         if (!photonView.isMine)
         {
             return;
         }
         instance = this;
-
+        
         playerVideoList = new List<GameObject>();
 
         // Setup Agora Engine and Callbacks.
@@ -90,6 +91,8 @@ public class AgoraVideoChat : Photon.MonoBehaviour
         mRtcEngine.JoinChannel(channel, null, 0);
     }
 
+
+
     public string GetCurrentChannel() => channel;
 
     public void JoinRemoteChannel(string remoteChannelName)
@@ -105,6 +108,8 @@ public class AgoraVideoChat : Photon.MonoBehaviour
         mRtcEngine.EnableVideo();
         mRtcEngine.EnableVideoObserver();
 
+        
+        
         channel = remoteChannelName;
     }
 

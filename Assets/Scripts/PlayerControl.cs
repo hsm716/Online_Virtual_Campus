@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Cinemachine;
+using agora_gaming_rtc;
 
 public class PlayerControl : Photon.MonoBehaviour, IPunObservable
 {
@@ -67,10 +68,13 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
 
     public GameObject info_btn;
     string cur_url = "";
+
+
+    
     private void Awake()
     {
 
-
+        
         NickName.text = PV.owner.NickName;
         rgbd2d = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -122,6 +126,8 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             
             h = Input.GetAxisRaw("Horizontal") + right_Value + left_Value;
             v = Input.GetAxisRaw("Vertical") + up_Value + down_Value;
+
+            bgm.volume = bgm_slider.value;
 
             ButtonUp();
 
@@ -396,7 +402,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         }
     }
     public AudioSource bgm;
-    public AudioClip bgm_1;
+    public Slider bgm_slider;
     public void Music_Onoff()
     {
         if (bgm.isPlaying)
