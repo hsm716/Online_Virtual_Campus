@@ -51,6 +51,9 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     bool left_Up;
     bool right_Up;
 
+    public Joystick joystick;
+    public Transform Buttons;
+
     public int grade;
     GameObject Location_text;
 
@@ -119,6 +122,57 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             h = Input.GetAxisRaw("Horizontal") + right_Value + left_Value;
             v = Input.GetAxisRaw("Vertical") + up_Value + down_Value;
 
+            ButtonUp();
+
+            if(Mathf.Abs(joystick.Horizontal) > 0.2f || Mathf.Abs(joystick.Vertical) > 0.2f)
+            {
+                if(Mathf.Abs(joystick.Horizontal) > Mathf.Abs(joystick.Vertical))
+                {
+                    v = 0;
+                    if(joystick.Horizontal > 0.2f)
+                    {
+                        h = 1;
+                        ButtonPress(3); //right : 3
+                        right_Down = true;
+                    }
+                    else if(joystick.Horizontal < -0.2f)
+                    {
+                        h = -1;
+                        ButtonPress(2); //left : 2
+                        left_Down = true;
+                    }
+                    else
+                    {
+                        h = 0;
+                        left_Up = true;
+                        right_Up = true;
+                    }
+                }
+                else
+                {
+                    h = 0;
+                    if (joystick.Vertical > 0.2f)
+                    {
+                        v = 1;
+                        ButtonPress(0); //up : 0
+                        up_Down = true;
+                    }
+                    else if(joystick.Vertical < -0.2f)
+                    {
+                        v = -1;
+                        ButtonPress(1); //down : 1
+                        down_Down = true;
+                    }
+                    else
+                    {
+                        v = 0;
+                        down_Up = true;
+                        up_Up = true;
+                    }
+                }
+            }
+
+
             bool hDown = Input.GetButtonDown("Horizontal") || left_Down || right_Down;
             bool vDown = Input.GetButtonDown("Vertical") || up_Down || down_Down;
             bool hUp = Input.GetButtonUp("Horizontal") || left_Up || right_Up;
@@ -161,8 +215,6 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             down_Up = false;
             left_Up = false;
             right_Up = false;
-
-
 
             if (hDown)
                 isHorizontalMove = true;
@@ -216,6 +268,40 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         //transform.GetComponent<Rigidbody2D>().velocity = moveVec * Speed;
     }
 
+    void ButtonPress(int index)
+    {
+        for (int i = 0; i < Buttons.childCount; i++)
+        {
+            //Button targetButton = Buttons.GetChild(i).GetComponent<Button>();
+            if(i == index)
+            {
+                //Buttons.GetChild(i).GetComponent<Button>().onClick.Invoke();
+                //targetButton.image.sprite = targetButton.spriteState.pressedSprite;
+                Transform targetButton = Buttons.GetChild(i);
+                targetButton.GetComponent<Image>().sprite = targetButton.GetComponent<ButtonSprite>().pressedSprite;
+            }
+        }
+    }
+    void ButtonUp()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            //Button targetButton = Buttons.GetChild(i).GetComponent<Button>();
+            //ButtonSprite bs = Buttons.GetChild(i).GetComponent<ButtonSprite>();
+            //targetButton.image.sprite = bs.NormalSprite;
+            Transform targetButton = Buttons.GetChild(i);
+            targetButton.GetComponent<Image>().sprite = targetButton.GetComponent<ButtonSprite>().NormalSprite;
+            //targetButton.image.sprite = targetButton.spriteState.disabledSprite;
+        }
+    }
+
+    public void test()
+    {
+        Debug.Log("@@@@@@");
+    }
+
+    /*
+    //버튼 클릭
     public void ButtonDown(string type)
     {
         switch (type)
@@ -262,6 +348,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
 
         }
     }
+    */
     /////
     public void BubbleBubble(string chatText)
     {
