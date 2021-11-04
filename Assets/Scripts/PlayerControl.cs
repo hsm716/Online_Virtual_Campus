@@ -441,178 +441,184 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.CompareTag("Trigger_Check"))
+        if (PV.isMine)
         {
-            Location_text.transform.GetChild(0).GetComponent<Text>().text = col.name;
-            info_btn.SetActive(true);
+            if (col.CompareTag("Trigger_Check"))
+            {
+                Location_text.transform.GetChild(0).GetComponent<Text>().text = col.name;
+                info_btn.SetActive(true);
 
-            if (col.name == "제2과기대")
-            {
-                cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.17";
+                if (col.name == "제2과기대")
+                {
+                    cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.17";
+
+                }
+                else if (col.name == "제1과기대")
+                {
+                    cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.16";
+                }
+                else if ((col.name == "호연사관"))
+                {
+                    cur_url = "https://dormitel.korea.ac.kr/mbshome/mbs/hoyeon/subview.do?id=hoyeon_010401000000";
+                }
+                else if ((col.name == "IPARK"))
+                {
+                    cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.18";
+                }
+                else if ((col.name.Contains("종합운동장")))
+                {
+
+                    cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.22";
+                }
+                else if ((col.name == "가속기ICT융합관"))
+                {
+                    cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.21";
+                }
+                else if ((col.name == "산학협력관"))
+                {
+                    cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.20";
+
+                }
+                else if ((col.name == "농심국제관"))
+                {
+                    cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.14";
+                }
+                else if ((col.name == "호상정류장"))
+                {
+                    cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.13";
+                }
+                else if ((col.name == "정문"))
+                {
+                    cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.1";
+                }
+                else if ((col.name == "학생회관"))
+                {
+                    cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.11";
+                }
+                else if ((col.name == "공공정책관"))
+                {
+                    cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.8";
+                }
+                else if ((col.name == "행정관"))
+                {
+                    cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.7";
+                }
+                else if ((col.name == "석원경상관"))
+                {
+                    cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.6";
+                }
+                else if ((col.name == "학군단"))
+                {
+                    cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.10";
+                }
+                else if ((col.name == "문화스포츠관"))
+                {
+                    cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.4";
+                }
+                else if ((col.name == "체육과학관"))
+                {
+                    cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.3";
+                }
+                else if ((col.name == "동문운동장"))
+                {
+                    cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.2";
+                }
+                else if ((col.name == "호익플라자"))
+                {
+                    cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.9";
+                }
+                else if ((col.name == "약학대"))
+                {
+                    cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.19";
+                }
+                else if ((col.name == "중앙광장"))
+                {
+                    cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.15";
+                }
+                else if ((col.name == "학술정보원"))
+                {
+                    cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.12";
+                }
+                else if ((col.name == "문화융합관"))
+                {
+                    cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.5";
+                }
+                else
+                {
+                    cur_url = "";
+                }
 
             }
-            else if (col.name == "제1과기대")
+            if (col.CompareTag("상호작용_구역"))
             {
-                cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.16";
-            }
-            else if((col.name == "호연사관"))
-            {
-                cur_url = "https://dormitel.korea.ac.kr/mbshome/mbs/hoyeon/subview.do?id=hoyeon_010401000000";
-            }
-            else if((col.name == "IPARK"))
-            {
-                cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.18";
-            }
-            else if ((col.name.Contains("종합운동장")))
-            {
-            
-                cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.22";
-            }
-            else if ((col.name == "가속기ICT융합관"))
-            {
-                cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.21";
-            }
-            else if ((col.name == "산학협력관"))
-            {
-                cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.20";
-                
-            }
-            else if ((col.name == "농심국제관"))
-            {
-                cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.14";
-            }
-            else if ((col.name == "호상정류장"))
-            {
-                cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.13";
-            }
-            else if ((col.name == "정문"))
-            {
-                cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.1";
-            }
-            else if ((col.name == "학생회관"))
-            {
-                cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.11";
-            }
-            else if ((col.name == "공공정책관"))
-            {
-                cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.8";
-            }
-            else if ((col.name == "행정관"))
-            {
-                cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.7";
-            }
-            else if ((col.name == "석원경상관"))
-            {
-                cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.6";
-            }
-            else if ((col.name == "학군단"))
-            {
-                cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.10";
-            }
-            else if ((col.name == "문화스포츠관"))
-            {
-                cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.4";
-            }
-            else if ((col.name == "체육과학관"))
-            {
-                cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.3";
-            }
-            else if ((col.name == "동문운동장"))
-            {
-                cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.2";
-            }
-            else if ((col.name == "호익플라자"))
-            {
-                cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.9";
-            }
-            else if ((col.name == "약학대"))
-            {
-                cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.19";
-            }
-            else if ((col.name == "중앙광장"))
-            {
-                cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.15";
-            }
-            else if ((col.name == "학술정보원"))
-            {
-                cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.12";
-            }
-            else if ((col.name == "문화융합관"))
-            {
-                cur_url = "https://namu.wiki/w/%EA%B3%A0%EB%A0%A4%EB%8C%80%ED%95%99%EA%B5%90/%EC%84%B8%EC%A2%85%EC%BA%A0%ED%8D%BC%EC%8A%A4/%EC%8B%9C%EC%84%A4#s-1.5";
-            }
-            else
-            {
-                cur_url = "";
-            }
+                interaction_btn.SetActive(true);
 
-        }
-        if (col.CompareTag("상호작용_구역"))
-        {
-            interaction_btn.SetActive(true);
+                if ((col.name.Contains("url")))
+                {
+                    cur_inter_type = "url";
+                }
+                if ((col.name.Contains("act")))
+                {
+                    cur_inter_type = "act";
+                }
 
-            if ((col.name.Contains("url")))
-            {
-                cur_inter_type = "url";
-            }
-            if ((col.name.Contains("act")))
-            {
-                cur_inter_type = "act";
-            }
 
-            
-            if ((col.name == "미래관_식당_url"))
-            {
-                cur_inter_data = "https://sejong.korea.ac.kr/campuslife/facilities/dining/weeklymenu";
+                if ((col.name == "미래관_식당_url"))
+                {
+                    cur_inter_data = "https://sejong.korea.ac.kr/campuslife/facilities/dining/weeklymenu";
+                }
+                else if ((col.name == "IPARK_url"))
+                {
+                    cur_inter_data = "http://sejong.korea.ac.kr/mbshome/mbs/kr/subview.do?id=kr_050705060000";
+                }
+                else if ((col.name.Contains("종합운동장")))
+                {
+                    cur_inter_data = "http://sejong.korea.ac.kr/campuslife/facilities/field/enrollment";
+                }
+                else if ((col.name == "산학협력_url"))
+                {
+                    cur_inter_data = "http://innovation.korea.ac.kr/";
+                }
+                else if ((col.name == "학군단_url"))
+                {
+                    cur_inter_data = "https://102rotc.korea.ac.kr/rotc102/SelectionSchedule.do";
+                }
+                else if ((col.name == "학술정보원_url"))
+                {
+                    cur_inter_data = "https://libs.korea.ac.kr/";
+                }
+                else if ((col.name == "엘레베이터_1층_act"))
+                {
+                    cur_inter_data = col.name;
+                }
+                else if ((col.name == "엘레베이터_2층_act"))
+                {
+                    cur_inter_data = col.name;
+                }
+                else
+                {
+                    cur_inter_data = "";
+                }
+
             }
-            else if ((col.name == "IPARK_url"))
-            {
-                cur_inter_data = "http://sejong.korea.ac.kr/mbshome/mbs/kr/subview.do?id=kr_050705060000";
-            }
-            else if ((col.name.Contains("종합운동장")))
-            {
-                cur_inter_data = "http://sejong.korea.ac.kr/campuslife/facilities/field/enrollment";
-            }
-            else if ((col.name == "산학협력_url"))
-            {
-                cur_inter_data = "http://innovation.korea.ac.kr/";
-            }
-            else if ((col.name == "학군단_url"))
-            {
-                cur_inter_data = "https://102rotc.korea.ac.kr/rotc102/SelectionSchedule.do";
-            }
-            else if ((col.name == "학술정보원_url"))
-            {
-                cur_inter_data = "https://libs.korea.ac.kr/";
-            }
-            else if((col.name=="엘레베이터_1층_act"))
-            {
-                cur_inter_data = col.name;
-            }
-            else if ((col.name == "엘레베이터_2층_act"))
-            {
-                cur_inter_data = col.name;
-            }
-            else
-            {
-                cur_inter_data = "";
-            }
-        
         }
        
     }
     private void OnTriggerExit2D(Collider2D col)
     {
-        if (col.CompareTag("상호작용_구역"))
+        if (PV.isMine)
         {
-            interaction_btn.SetActive(false);
-            cur_inter_data = "";
-        }
-        if (col.CompareTag("Trigger_Check"))
-        {
-            Location_text.transform.GetChild(0).GetComponent<Text>().text = "";
-            info_btn.SetActive(false);
-            cur_url = "";
+            if (col.CompareTag("상호작용_구역"))
+            {
+                interaction_btn.SetActive(false);
+                cur_inter_data = "";
+            }
+            if (col.CompareTag("Trigger_Check"))
+            {
+                Location_text.transform.GetChild(0).GetComponent<Text>().text = "";
+                info_btn.SetActive(false);
+                cur_url = "";
+            }
         }
     }
 
