@@ -21,6 +21,7 @@ public class Chat : Photon.MonoBehaviour
 
     private void Start()
     {
+        chatInput.characterLimit = 27;
         for (int i = 0; i < messages.Count; i++)
         {
             ChatList.transform.GetChild(i).GetComponent<Text>().text = "";
@@ -54,7 +55,7 @@ public class Chat : Photon.MonoBehaviour
     [PunRPC]
     void SendChatMessage(string text, int viewID, PhotonMessageInfo info)
     {
-        AddMessage("[" + info.sender + "]{" + Location_txt.text + "}" + text);
+        AddMessage("[" + info.sender.NickName + "]{" + Location_txt.text + "} " + text);
         BubbleOn(viewID, text);
         //AddMessage(text);
     }
@@ -95,9 +96,9 @@ public class Chat : Photon.MonoBehaviour
     {
         //ChatList.SetActive(false);
         //chatInput.gameObject.SetActive(false);
-        ChatList.transform.localScale = new Vector3(1, 0, 1);
+        ChatListBackGround.transform.localScale = new Vector3(1, 0, 1);
         chatInput.transform.localScale = new Vector3(1, 0, 1);
-        ChatListBackGround.SetActive(false);
+        //ChatListBackGround.SetActive(false);
         FoldButton.SetActive(false);
         SpreadButton.SetActive(true);
     }
@@ -106,9 +107,9 @@ public class Chat : Photon.MonoBehaviour
     {
         //ChatList.SetActive(true);
         //chatInput.gameObject.SetActive(true);
-        ChatList.transform.localScale = new Vector3(1, 1, 1);
+        ChatListBackGround.transform.localScale = new Vector3(1, 1, 1);
         chatInput.transform.localScale = new Vector3(1, 1, 1);
-        ChatListBackGround.SetActive(true);
+        //ChatListBackGround.SetActive(true);
         FoldButton.SetActive(true);
         SpreadButton.SetActive(false);
     }
