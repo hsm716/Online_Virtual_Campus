@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Chat : Photon.MonoBehaviour
 {
     public GameObject ChatList;
+    public GameObject ChatListBackGround;
     public List<string> messages = new List<string>();
 
     public InputField chatInput;
@@ -96,6 +97,7 @@ public class Chat : Photon.MonoBehaviour
         //chatInput.gameObject.SetActive(false);
         ChatList.transform.localScale = new Vector3(1, 0, 1);
         chatInput.transform.localScale = new Vector3(1, 0, 1);
+        ChatListBackGround.SetActive(false);
         FoldButton.SetActive(false);
         SpreadButton.SetActive(true);
     }
@@ -106,6 +108,7 @@ public class Chat : Photon.MonoBehaviour
         //chatInput.gameObject.SetActive(true);
         ChatList.transform.localScale = new Vector3(1, 1, 1);
         chatInput.transform.localScale = new Vector3(1, 1, 1);
+        ChatListBackGround.SetActive(true);
         FoldButton.SetActive(true);
         SpreadButton.SetActive(false);
     }
