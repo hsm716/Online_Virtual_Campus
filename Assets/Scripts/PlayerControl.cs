@@ -468,7 +468,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             }
             else if ((col.name == "학술정보원_url"))
             {
-                cur_inter_data = "https://library.korea.ac.kr/";
+                cur_inter_data = "https://libs.korea.ac.kr/";
             }
             else if((col.name=="엘레베이터_1층_act"))
             {
