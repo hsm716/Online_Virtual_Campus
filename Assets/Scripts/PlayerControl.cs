@@ -70,6 +70,10 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     string cur_url = "";
 
 
+    public uint myUID;
+
+    public AgoraVideoChat AVC;
+    GameObject GameBoard;
     
     private void Awake()
     {
@@ -88,7 +92,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         }
         else
         {
-
+            GameBoard = GameObject.Find("Canvas").transform.GetChild(4).gameObject;
             var CM = GameObject.Find("CMCamera").GetComponent<CinemachineVirtualCamera>();
             CM.Follow = transform;
             CM.LookAt = transform;
@@ -299,6 +303,31 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             Transform targetButton = Buttons.GetChild(i);
             targetButton.GetComponent<Image>().sprite = targetButton.GetComponent<ButtonSprite>().NormalSprite;
             //targetButton.image.sprite = targetButton.spriteState.disabledSprite;
+        }
+    }
+
+
+    public void Request_Game()
+    {
+        PV.RPC("Receive_GameRequest", PhotonTargets.All);
+    }
+    [PunRPC]
+    public void Receive_GameRequest()
+    {
+        
+
+        var avc_p = GameObject.FindGameObjectsWithTag("Player");
+        foreach (var p in avc_p)
+        {
+            PlayerControl pc = p.GetComponent<PlayerControl>();
+            foreach (var po in AVC.playerVideoList)
+            {
+                if (pc.myUID.ToString() == po.name)
+                {
+                    GameBoard.SetActive(true);
+                    break;
+                }
+            }
         }
     }
 
@@ -629,6 +658,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
             stream.SendNext(grade);
+            stream.SendNext(myUID);
             //stream.SendNext(transform.GetComponent<Rigidbody2D>().velocity);
         }
         else
@@ -636,6 +666,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             curPos = (Vector3)stream.ReceiveNext();
             curRot = (Quaternion)stream.ReceiveNext();
             grade = (int)stream.ReceiveNext();
+            myUID = (uint)stream.ReceiveNext();
             //transform.GetComponent<Rigidbody2D>().velocity = (Vector2)stream.ReceiveNext();
         }
     }
