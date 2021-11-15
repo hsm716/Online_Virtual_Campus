@@ -70,7 +70,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     string cur_url = "";
 
 
-    public uint myUID;
+    public int myUID;
 
     public AgoraVideoChat AVC;
     GameObject GameBoard;
@@ -666,7 +666,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             curPos = (Vector3)stream.ReceiveNext();
             curRot = (Quaternion)stream.ReceiveNext();
             grade = (int)stream.ReceiveNext();
-            myUID = (uint)stream.ReceiveNext();
+            myUID = (int)stream.ReceiveNext();
             //transform.GetComponent<Rigidbody2D>().velocity = (Vector2)stream.ReceiveNext();
         }
     }
