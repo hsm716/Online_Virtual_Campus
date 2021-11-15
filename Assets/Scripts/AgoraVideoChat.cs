@@ -18,17 +18,17 @@ using UnityEngine.UI;
 
 
 
-public class AgoraVideoChat : Photon.MonoBehaviour
+public class AgoraVideoChat : Photon.MonoBehaviour, IPunObservable
 {
     [Header("Agora Properties")]
 
     static public AgoraVideoChat instance;
     // *** ADD YOUR APP ID HERE BEFORE GETTING STARTED *** //
     [SerializeField] private string appID = "ADD YOUR APP ID HERE";
-    [SerializeField] private string channel = "unity3d";
+    [SerializeField] private string channel = "unity3D";
     private string originalChannel;
     private IRtcEngine mRtcEngine;
-    private uint myUID = 0;
+    [SerializeField] private uint myUID = 125;
 
     [Header("Player Video Panel Properties")]
     [SerializeField] private GameObject userVideoPrefab;
@@ -57,12 +57,12 @@ public class AgoraVideoChat : Photon.MonoBehaviour
         {
             IRtcEngine.Destroy();
         }
-
+        uint tempchannel = (uint)(Random.Range(501, 1000));
+        channel = tempchannel.ToString();
         originalChannel = channel;
 
         // -- These are all necessary steps to initialize the Agora engine -- //
         // Initialize Agora engine
-
 
 
 
@@ -315,5 +315,16 @@ public class AgoraVideoChat : Photon.MonoBehaviour
     private void OnApplicationQuit()
     {
         TerminateAgoraEngine();
+    }
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.isWriting)
+        {
+            stream.SendNext(channel);
+        }
+        else
+        {
+            channel = (string)stream.ReceiveNext();
+        }
     }
 }
