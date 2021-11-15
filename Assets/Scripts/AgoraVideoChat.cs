@@ -57,7 +57,7 @@ public class AgoraVideoChat : Photon.MonoBehaviour, IPunObservable
         {
             IRtcEngine.Destroy();
         }
-        uint tempchannel = (uint)(Random.Range(501, 1000));
+        uint tempchannel = (uint)(Random.Range(0, 1000));
         channel = tempchannel.ToString();
         originalChannel = channel;
 
