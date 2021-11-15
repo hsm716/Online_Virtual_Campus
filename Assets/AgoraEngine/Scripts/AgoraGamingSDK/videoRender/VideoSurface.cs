@@ -400,8 +400,9 @@ namespace agora_gaming_rtc
         }
 
         /*
-        * uid = 0, it means yourself but not others, you can get others uid by Agora Engine CallBack onUserJoined.
-        */
+         * uid = 0, it means yourself but not others, you can get others uid by Agora Engine CallBack onUserJoined.
+         */
+        
         private uint mUid = 0;
 
         /*
