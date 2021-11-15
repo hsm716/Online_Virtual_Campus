@@ -154,7 +154,7 @@ public class AgoraVideoChat : Photon.MonoBehaviour
         }
 
         myUID = uid;
-        transform.GetComponent<PlayerControl>().myUID = myUID;
+        transform.GetComponent<PlayerControl>().myUID = (int)myUID;
 
         CreateUserVideoSurface(uid, true);
     }
