@@ -31,4 +31,5 @@ MonoBehaviour:
   - FlipX
   - InvitePlayerToPartyChannel
   - SendChatMessage
+  - Receive_GameRequest
   DisableAutoOpenWizard: 1

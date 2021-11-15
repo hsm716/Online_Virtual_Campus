@@ -28,18 +28,21 @@ public class AgoraVideoChat : Photon.MonoBehaviour
     [SerializeField] private string channel = "unity3d";
     private string originalChannel;
     private IRtcEngine mRtcEngine;
-    private uint myUID = 0;
+    public uint myUID = 0;
 
     [Header("Player Video Panel Properties")]
     [SerializeField] private GameObject userVideoPrefab;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private RectTransform content;
     [SerializeField] private float spaceBetweenUserVideos = 150f;
-    private List<GameObject> playerVideoList;
+    public List<GameObject> playerVideoList;
 
     public delegate void AgoraCustomEvent();
     public static event AgoraCustomEvent PlayerChatIsEmpty;
     public static event AgoraCustomEvent PlayerChatIsPopulated;
+
+
+
 
     void Start()
     {
@@ -151,6 +154,7 @@ public class AgoraVideoChat : Photon.MonoBehaviour
         }
 
         myUID = uid;
+        transform.GetComponent<PlayerControl>().myUID = myUID;
 
         CreateUserVideoSurface(uid, true);
     }
@@ -289,6 +293,8 @@ public class AgoraVideoChat : Photon.MonoBehaviour
             PlayerChatIsEmpty();
         }
     }
+
+
 
     public void TerminateAgoraEngine()
     {
