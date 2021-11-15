@@ -25,7 +25,7 @@ public class AgoraVideoChat : Photon.MonoBehaviour
     static public AgoraVideoChat instance;
     // *** ADD YOUR APP ID HERE BEFORE GETTING STARTED *** //
     [SerializeField] private string appID = "ADD YOUR APP ID HERE";
-    [SerializeField] private string channel = "unity3d";
+    [SerializeField] private string channel;
     private string originalChannel;
     private IRtcEngine mRtcEngine;
     private uint myUID = 0;
@@ -57,7 +57,7 @@ public class AgoraVideoChat : Photon.MonoBehaviour
         {
             IRtcEngine.Destroy();
         }
-
+        channel = Random.Range(0, 1000).ToString();
         originalChannel = channel;
 
         // -- These are all necessary steps to initialize the Agora engine -- //
