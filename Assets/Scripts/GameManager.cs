@@ -6,7 +6,7 @@ using System.Linq;
 public class GameManager : Photon.MonoBehaviour,IPunObservable
 {
 
-    public string[] GamePlayer_list = new string[100];
+    static public string[] GamePlayer_list = new string[100];
 
 
 
