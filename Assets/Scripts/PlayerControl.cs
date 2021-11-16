@@ -310,28 +310,23 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
 
     public void Request_Game()
     {
-        PV.RPC("Receive_GameRequest", PhotonTargets.All);
+        PV.RPC("Receive_GameRequest", PhotonTargets.All, myUID);
     }
     [PunRPC]
-    public void Receive_GameRequest()
+    public void Receive_GameRequest(long remoteUID)
     {
-        
 
-        var avc_p = GameObject.FindGameObjectsWithTag("Player");
-        foreach (var p in avc_p)
+        for (int i = 0; i < VideoSpawnPoint.childCount; i++)
         {
-            PlayerControl pc = p.GetComponent<PlayerControl>();
-            for(int i = 0; i < VideoSpawnPoint.childCount; i++)
+            if (remoteUID.ToString() == VideoSpawnPoint.GetChild(i).name)
             {
-                if (pc.myUID.ToString() == VideoSpawnPoint.GetChild(i).name)
-                {
-                    Debug.Log(pc.myUID.ToString()+" " + VideoSpawnPoint.GetChild(i).name);
-                    Open_Close_GameBoard(GameBoard);
-                    break;
-                }
-                
+                Debug.Log(.myUID.ToString() + " " + VideoSpawnPoint.GetChild(i).name);
+                Open_Close_GameBoard(GameBoard);
+                break;
             }
+
         }
+
     }
     void Open_Close_GameBoard(GameObject go)
     {
