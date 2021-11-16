@@ -125,7 +125,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
                 grade_img.sprite = grade_sp[3];
                 break;
         }
-        GameBoard.SetActive(uiActive);
+        //GameBoard.SetActive(uiActive);
         if (PV.isMine)
         {
             //h = Input.GetAxisRaw("Horizontal");
@@ -316,22 +316,14 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
 
     public void Request_Game()
     {
-        PV.RPC("Receive_GameRequest", PhotonTargets.All, myUID);
+        PV.RPC("Receive_GameRequest", PhotonTargets.All);
     }
 
     [PunRPC]
-    public void Receive_GameRequest(long remoteUID)
+    public void Receive_GameRequest()
     {
-        Debug.Log(remoteUID);
-        //Open_Close_GameBoard(remoteUID);
-        if (uiActive == true)
-        {
-            uiActive = false;
-        }
-        else
-        {
-            uiActive = true;
-        }
+        
+        GameBoard.SetActive(true);
     }
 
     void Open_Close_GameBoard(long remoteUID)
