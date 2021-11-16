@@ -76,6 +76,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     public GameObject GameBoard;
 
     public bool isGaming;
+    public bool isGameReader;
 
     private void Awake()
     {
@@ -319,6 +320,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     public void Request_Game()
     {
         PV.RPC("Receive_GameRequest", PhotonTargets.All,myUID);
+        isGameReader = true;
     }
 
     [PunRPC]
@@ -685,6 +687,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             stream.SendNext(grade);
             stream.SendNext(myUID);
             stream.SendNext(isGaming);
+            stream.SendNext(isGameReader);
             //stream.SendNext(transform.GetComponent<Rigidbody2D>().velocity);
         }
         else
@@ -694,6 +697,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             grade = (int)stream.ReceiveNext();
             myUID = (long)stream.ReceiveNext();
             isGaming = (bool)stream.ReceiveNext();
+            isGameReader = (bool)stream.ReceiveNext();
             //transform.GetComponent<Rigidbody2D>().velocity = (Vector2)stream.ReceiveNext();
         }
     }
