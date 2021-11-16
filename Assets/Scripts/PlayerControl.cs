@@ -36,7 +36,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     private Animator anim;
 
     public SpriteRenderer SR;
-    
+
     Vector2 moveVec;
 
     //Mobile Key Var
@@ -71,14 +71,14 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
 
     public Transform VideoSpawnPoint;
     public long myUID;
-
+    public bool uiActive;
     public AgoraVideoChat AVC;
     public GameObject GameBoard;
-    
+
     private void Awake()
     {
 
-        
+
         NickName.text = PV.owner.NickName;
         rgbd2d = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -93,13 +93,13 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         }
         else
         {
-           
+
             var CM = GameObject.Find("CMCamera").GetComponent<CinemachineVirtualCamera>();
             CM.Follow = transform;
             CM.LookAt = transform;
             Location_text = GameObject.Find("Canvas").transform.GetChild(3).gameObject;
             Location_text.SetActive(true);
-            //myUID = AVC.GetUID();
+            uiActive = false;
         }
     }
 
@@ -125,11 +125,12 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
                 grade_img.sprite = grade_sp[3];
                 break;
         }
+        //GameBoard.SetActive(uiActive);
         if (PV.isMine)
         {
             //h = Input.GetAxisRaw("Horizontal");
             //v = Input.GetAxisRaw("Vertical");
-            
+
             h = Input.GetAxisRaw("Horizontal") + right_Value + left_Value;
             v = Input.GetAxisRaw("Vertical") + up_Value + down_Value;
 
@@ -206,7 +207,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             {
                 anim.SetBool("isRun_back", true);
                 anim.SetBool("isRun_mid", true);
-                
+
             }
             else if (v == 0)
             {
@@ -240,7 +241,10 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             {
                 anim.SetBool("isRun_mid", false);
             }
-            
+
+
+
+
 
             /* if (anim.GetInteger("hAxisRaw") != h)
              {
@@ -256,6 +260,8 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
              {
                  anim.SetBool("isChange", false);
              }*/
+
+
         }
         else
         {
@@ -273,9 +279,9 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     {
         rgbd2d.velocity = Vector2.zero;
         rgbd2d.angularVelocity =0f;
-       
+
         moveVec = isHorizontalMove ? new Vector2(h, 0) : new Vector2(0, v);
-       
+
         //isHorizontalMove ? new Vector2(h, 0) : new Vector2(0, v);
         rgbd2d.MovePosition(rgbd2d.position + moveVec.normalized * Speed * Time.fixedDeltaTime);
         //transform.GetComponent<Rigidbody2D>().velocity = moveVec * Speed;
@@ -312,47 +318,36 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     {
         PV.RPC("Receive_GameRequest", PhotonTargets.All,myUID);
     }
+
     [PunRPC]
     public void Receive_GameRequest(long uid)
     {
-        
-        if(AVC.player_Name_list.Contains(uid.ToString())){
-            
-            GameBoard.SetActive(true);
-        }
 
-
-
-/*        var avc_p = GameObject.FindGameObjectsWithTag("Player");
-        foreach (var p in avc_p)
-        {
-            PlayerControl pc = p.GetComponent<PlayerControl>();
-            for(int i = 0; i < VideoSpawnPoint.childCount; i++)
-            {
-                if (pc.myUID.ToString() == VideoSpawnPoint.GetChild(i).name)
-                {
-                    Debug.Log(pc.myUID.ToString()+" " + VideoSpawnPoint.GetChild(i).name);
-
-                    GameBoard = GameObject.Find("Canvas").transform.GetChild(4).gameObject;
-                    GameBoard.SetActive(true);
-                    //Open_Close_GameBoard(GameBoard);
-                    break;
-                }
-                
-            }
-        }*/
+        GameBoard.SetActive(true);
     }
-    void Open_Close_GameBoard(GameObject go)
+
+    void Open_Close_GameBoard(long remoteUID)
     {
-        
-        if (go.activeSelf == false)
+        foreach (Transform item in VideoSpawnPoint)
         {
-            go.SetActive(true);
+            Debug.Log("test");
+            if (remoteUID.ToString() == item.name)
+            {
+                Debug.Log(myUID.ToString() + " " + item.name);
+
+                if (uiActive == true)
+                {
+                    uiActive = false;
+                }
+                else
+                {
+                    uiActive = true;
+                }
+
+                break;
+            }
         }
-        else
-        {
-            go.SetActive(false);
-        }
+
     }
 
     public void Back_Game()
@@ -431,7 +426,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     ///
     public void Interaction_OpenURL()
     {
-        
+
         if (cur_inter_data != "")
         {
             if (cur_inter_type=="url")
@@ -469,7 +464,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         }
         else
         {
-            
+
             bgm.GetComponent<Image>().color = new Color(0.48f, 0, 0.1f);
             bgm.Play();
 
@@ -659,7 +654,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
 
             }
         }
-       
+
     }
     private void OnTriggerExit2D(Collider2D col)
     {
