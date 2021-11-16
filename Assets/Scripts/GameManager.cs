@@ -23,7 +23,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     public GameObject[] players;
 
     [SerializeField]
-    int curPlayer_Count = 1;
+    private int curPlayer_Count;
     public void FindPlayers()
     {
         players = GameObject.FindGameObjectsWithTag("Player");
@@ -55,6 +55,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     void Awake()
     {
         instance = this;
+        curPlayer_Count = 1;
     }
 
     // Update is called once per frame
