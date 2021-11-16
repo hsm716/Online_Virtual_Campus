@@ -315,16 +315,14 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     [PunRPC]
     public void Receive_GameRequest(long remoteUID)
     {
-
-        for (int i = 0; i < VideoSpawnPoint.childCount; i++)
+        foreach (Transform item in VideoSpawnPoint)
         {
-            if (remoteUID.ToString() == VideoSpawnPoint.GetChild(i).name)
+            if (remoteUID.ToString() == item.name)
             {
-                Debug.Log(.myUID.ToString() + " " + VideoSpawnPoint.GetChild(i).name);
+                Debug.Log(myUID.ToString() + " " + item.name);
                 Open_Close_GameBoard(GameBoard);
                 break;
             }
-
         }
 
     }
