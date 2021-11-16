@@ -6,7 +6,7 @@ using System.Linq;
 public class GameManager : Photon.MonoBehaviour,IPunObservable
 {
 
-    static public string[] GamePlayer_list = new string[100];
+    //static public string[] GamePlayer_list = new string[100];
 
 
 
@@ -47,12 +47,12 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     {
         if (stream.isWriting)
         {
-            stream.SendNext(GamePlayer_list);
+            //stream.SendNext(GamePlayer_list);
             stream.SendNext(time);
         }
         else
         {
-            GamePlayer_list = (string[])stream.ReceiveNext();
+            //GamePlayer_list = (string[])stream.ReceiveNext();
             time = (int)stream.ReceiveNext();
         }
     }
