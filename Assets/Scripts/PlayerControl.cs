@@ -320,6 +320,8 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     public void Request_Game()
     {
         PV.RPC("Receive_GameRequest", PhotonTargets.All,myUID);
+        GameManager.instance.JoinButton.SetActive(false);
+        isGaming = true;
         GameManager.instance.StartButton.SetActive(true);
     }
 
