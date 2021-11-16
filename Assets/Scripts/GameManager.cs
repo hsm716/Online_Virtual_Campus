@@ -50,18 +50,14 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     {
         instance = this;
     }
-    private void Start()
-    {
-        FindPlayers();
-
-    }
 
     // Update is called once per frame
     void Update()
     {
-        if (StartButton.activeSelf ==true&&check_state==false)
+        if (StartButton.activeSelf ==false&&check_state==false)
         {
             check_state = true;
+            FindPlayers();
             foreach (var p in players)
             {
                 if (p.GetComponent<PlayerControl>().isGameReader == true)
