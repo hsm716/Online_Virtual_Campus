@@ -317,31 +317,36 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     {
         PV.RPC("Receive_GameRequest", PhotonTargets.All, myUID);
     }
+
     [PunRPC]
     public void Receive_GameRequest(long remoteUID)
     {
         Debug.Log(remoteUID);
+        Open_Close_GameBoard(remoteUID);
+    }
+
+    void Open_Close_GameBoard(long remoteUID)
+    {
         foreach (Transform item in VideoSpawnPoint)
         {
+            Debug.Log("test");
             if (remoteUID.ToString() == item.name)
             {
                 Debug.Log(myUID.ToString() + " " + item.name);
-                Open_Close_GameBoard();
+
+                if (uiActive == true)
+                {
+                    uiActive = false;
+                }
+                else
+                {
+                    uiActive = true;
+                }
+
                 break;
             }
         }
-
-    }
-    void Open_Close_GameBoard()
-    {
-        if (uiActive == true)
-        {
-            uiActive = false;
-        }
-        else
-        {
-            uiActive = true;
-        }
+        
     }
 
     public void Back_Game()
