@@ -7,12 +7,12 @@ using UnityEngine.UI;
 
 
 
-/* NOTE: 
+/* NOTE:
  *
  * This script handles the Agora-related functionality:
  * - Joining / Leaving Channels
  * - Creating / Deleting VideoSurface objects that enable us to see the camera feed of Agora party chat
- * - Managing the UI that contains the VideoSurface objects 
+ * - Managing the UI that contains the VideoSurface objects
  *
  */
 
@@ -25,31 +25,34 @@ public class AgoraVideoChat : Photon.MonoBehaviour, IPunObservable
     static public AgoraVideoChat instance;
     // *** ADD YOUR APP ID HERE BEFORE GETTING STARTED *** //
     [SerializeField] private string appID = "ADD YOUR APP ID HERE";
-    [SerializeField] private string channel = "unity3D";
+    [SerializeField] private string channel;
     private string originalChannel;
     private IRtcEngine mRtcEngine;
-    [SerializeField] private uint myUID = 125;
+    public uint myUID = 0;
 
     [Header("Player Video Panel Properties")]
     [SerializeField] private GameObject userVideoPrefab;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private RectTransform content;
     [SerializeField] private float spaceBetweenUserVideos = 150f;
-    private List<GameObject> playerVideoList;
+    public List<GameObject> playerVideoList;
 
     public delegate void AgoraCustomEvent();
     public static event AgoraCustomEvent PlayerChatIsEmpty;
     public static event AgoraCustomEvent PlayerChatIsPopulated;
 
+
+
+
     void Start()
     {
-        
+
         if (!photonView.isMine)
         {
             return;
         }
         instance = this;
-        
+
         playerVideoList = new List<GameObject>();
 
         // Setup Agora Engine and Callbacks.
@@ -57,8 +60,7 @@ public class AgoraVideoChat : Photon.MonoBehaviour, IPunObservable
         {
             IRtcEngine.Destroy();
         }
-        uint tempchannel = (uint)(Random.Range(0, 1000));
-        channel = tempchannel.ToString();
+        channel = Random.Range(0, 1000).ToString();
         originalChannel = channel;
 
         // -- These are all necessary steps to initialize the Agora engine -- //
@@ -83,11 +85,11 @@ public class AgoraVideoChat : Photon.MonoBehaviour, IPunObservable
         mRtcEngine.OnLeaveChannel = OnLeaveChannelHandler;
         mRtcEngine.OnUserOffline = OnUserOfflineHandler;
 
-        // Your video feed will not render if EnableVideo() isn't called. 
+        // Your video feed will not render if EnableVideo() isn't called.
         mRtcEngine.EnableVideo();
         mRtcEngine.EnableVideoObserver();
 
-        // By setting our UID to "0" the Agora Engine creates a unique UID and returns it in the OnJoinChannelSuccess callback. 
+        // By setting our UID to "0" the Agora Engine creates a unique UID and returns it in the OnJoinChannelSuccess callback.
         mRtcEngine.JoinChannel(channel, null, 0);
     }
 
@@ -100,7 +102,7 @@ public class AgoraVideoChat : Photon.MonoBehaviour, IPunObservable
         if (!photonView.isMine)
         {
             return;
-        } 
+        }
 
         mRtcEngine.LeaveChannel();
 
@@ -108,8 +110,8 @@ public class AgoraVideoChat : Photon.MonoBehaviour, IPunObservable
         mRtcEngine.EnableVideo();
         mRtcEngine.EnableVideoObserver();
 
-        
-        
+
+
         channel = remoteChannelName;
     }
 
@@ -151,6 +153,7 @@ public class AgoraVideoChat : Photon.MonoBehaviour, IPunObservable
         }
 
         myUID = uid;
+        transform.GetComponent<PlayerControl>().myUID = (int)myUID;
 
         CreateUserVideoSurface(uid, true);
     }
@@ -290,6 +293,8 @@ public class AgoraVideoChat : Photon.MonoBehaviour, IPunObservable
         }
     }
 
+
+
     public void TerminateAgoraEngine()
     {
         if (mRtcEngine != null)
@@ -311,7 +316,7 @@ public class AgoraVideoChat : Photon.MonoBehaviour, IPunObservable
         TerminateAgoraEngine();
     }
 
-    // Cleaning up the Agora engine during OnApplicationQuit() is an essential part of the Agora process with Unity. 
+    // Cleaning up the Agora engine during OnApplicationQuit() is an essential part of the Agora process with Unity.
     private void OnApplicationQuit()
     {
         TerminateAgoraEngine();
