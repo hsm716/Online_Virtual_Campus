@@ -310,14 +310,20 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
 
     public void Request_Game()
     {
-        PV.RPC("Receive_GameRequest", PhotonTargets.All);
+        PV.RPC("Receive_GameRequest", PhotonTargets.All,myUID);
     }
     [PunRPC]
-    public void Receive_GameRequest()
+    public void Receive_GameRequest(long uid)
     {
         
+        if(AVC.player_Name_list.Contains(uid.ToString())){
+            
+            GameBoard.SetActive(true);
+        }
 
-        var avc_p = GameObject.FindGameObjectsWithTag("Player");
+
+
+/*        var avc_p = GameObject.FindGameObjectsWithTag("Player");
         foreach (var p in avc_p)
         {
             PlayerControl pc = p.GetComponent<PlayerControl>();
@@ -326,15 +332,19 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
                 if (pc.myUID.ToString() == VideoSpawnPoint.GetChild(i).name)
                 {
                     Debug.Log(pc.myUID.ToString()+" " + VideoSpawnPoint.GetChild(i).name);
-                    Open_Close_GameBoard(GameBoard);
+
+                    GameBoard = GameObject.Find("Canvas").transform.GetChild(4).gameObject;
+                    GameBoard.SetActive(true);
+                    //Open_Close_GameBoard(GameBoard);
                     break;
                 }
                 
             }
-        }
+        }*/
     }
     void Open_Close_GameBoard(GameObject go)
     {
+        
         if (go.activeSelf == false)
         {
             go.SetActive(true);

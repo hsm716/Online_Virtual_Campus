@@ -36,6 +36,7 @@ public class AgoraVideoChat : Photon.MonoBehaviour, IPunObservable
     [SerializeField] private RectTransform content;
     [SerializeField] private float spaceBetweenUserVideos = 150f;
     public List<GameObject> playerVideoList;
+    public List<string> player_Name_list;
 
     public delegate void AgoraCustomEvent();
     public static event AgoraCustomEvent PlayerChatIsEmpty;
@@ -54,6 +55,7 @@ public class AgoraVideoChat : Photon.MonoBehaviour, IPunObservable
         instance = this;
 
         playerVideoList = new List<GameObject>();
+        player_Name_list = new List<string>();
 
         // Setup Agora Engine and Callbacks.
         if(mRtcEngine != null)
@@ -185,6 +187,7 @@ public class AgoraVideoChat : Photon.MonoBehaviour, IPunObservable
             Destroy(player.gameObject);
         }
         playerVideoList.Clear();
+        player_Name_list.Clear();
     }
 
     // Remote User Leaves the Channel.
@@ -232,6 +235,7 @@ public class AgoraVideoChat : Photon.MonoBehaviour, IPunObservable
         newUserVideo.transform.rotation = Quaternion.Euler(Vector3.right * -180);
 
         playerVideoList.Add(newUserVideo);
+        player_Name_list.Add(newUserVideo.name);
 
         // Update our VideoSurface to reflect new users
         VideoSurface newVideoSurface = newUserVideo.GetComponent<VideoSurface>();
@@ -261,6 +265,7 @@ public class AgoraVideoChat : Photon.MonoBehaviour, IPunObservable
             if (player.name == deletedUID.ToString())
             {
                 playerVideoList.Remove(player);
+                player_Name_list.Remove(player.name);
                 Destroy(player.gameObject);
                 break;
             }
