@@ -138,7 +138,7 @@ public class PartyJoiner : Photon.MonoBehaviour
         {
             agoraVideo.JoinRemoteChannel(remoteInviteChannelName);
 
-            photonView.RPC("ListUpdate", PhotonTargets.All, photonView.viewID, agoraVideo.GetCurrentChannel());
+            //photonView.RPC("ListUpdate", PhotonTargets.All, photonView.viewID, agoraVideo.GetCurrentChannel());
 
             joinButton.SetActive(false);
             leaveButton.SetActive(true);

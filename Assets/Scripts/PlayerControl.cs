@@ -71,7 +71,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
 
     public Transform VideoSpawnPoint;
     public long myUID;
-
+    bool uiActive;
     public AgoraVideoChat AVC;
     public GameObject GameBoard;
     
@@ -99,7 +99,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             CM.LookAt = transform;
             Location_text = GameObject.Find("Canvas").transform.GetChild(3).gameObject;
             Location_text.SetActive(true);
-            //myUID = AVC.GetUID();
+            uiActive = false;
         }
     }
 
@@ -240,7 +240,10 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             {
                 anim.SetBool("isRun_mid", false);
             }
-            
+
+
+            GameBoard.SetActive(uiActive);
+
 
             /* if (anim.GetInteger("hAxisRaw") != h)
              {
@@ -256,6 +259,8 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
              {
                  anim.SetBool("isChange", false);
              }*/
+
+
         }
         else
         {
@@ -320,21 +325,21 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             if (remoteUID.ToString() == item.name)
             {
                 Debug.Log(myUID.ToString() + " " + item.name);
-                Open_Close_GameBoard(GameBoard);
+                Open_Close_GameBoard();
                 break;
             }
         }
 
     }
-    void Open_Close_GameBoard(GameObject go)
+    void Open_Close_GameBoard()
     {
-        if (go.activeSelf == false)
+        if (uiActive == true)
         {
-            go.SetActive(true);
+            uiActive = false;
         }
         else
         {
-            go.SetActive(false);
+            uiActive = true;
         }
     }
 
