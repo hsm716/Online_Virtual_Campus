@@ -675,6 +675,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             stream.SendNext(transform.rotation);
             stream.SendNext(grade);
             stream.SendNext(myUID);
+            stream.SendNext(uiActive);
             //stream.SendNext(transform.GetComponent<Rigidbody2D>().velocity);
         }
         else
@@ -683,6 +684,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             curRot = (Quaternion)stream.ReceiveNext();
             grade = (int)stream.ReceiveNext();
             myUID = (long)stream.ReceiveNext();
+            uiActive = (bool)stream.ReceiveNext();
             //transform.GetComponent<Rigidbody2D>().velocity = (Vector2)stream.ReceiveNext();
         }
     }
