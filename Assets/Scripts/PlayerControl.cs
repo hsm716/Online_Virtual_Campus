@@ -323,15 +323,15 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     public void Receive_GameRequest(long remoteUID)
     {
         Debug.Log(remoteUID);
-        Open_Close_GameBoard(remoteUID);
-       /* if (uiActive == true)
+        //Open_Close_GameBoard(remoteUID);
+        if (uiActive == true)
         {
             uiActive = false;
         }
         else
         {
             uiActive = true;
-        }*/
+        }
     }
 
     void Open_Close_GameBoard(long remoteUID)
