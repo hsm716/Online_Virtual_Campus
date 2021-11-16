@@ -73,7 +73,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     public long myUID;
 
     public AgoraVideoChat AVC;
-    GameObject GameBoard;
+    public GameObject GameBoard;
     
     private void Awake()
     {
@@ -85,6 +85,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     }
     private void Start()
     {
+        GameBoard = GameObject.Find("Canvas").transform.GetChild(4).gameObject;
         if (!PV.isMine)
         {
             myUI.SetActive(false);
@@ -92,7 +93,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         }
         else
         {
-            GameBoard = GameObject.Find("Canvas").transform.GetChild(4).gameObject;
+           
             var CM = GameObject.Find("CMCamera").GetComponent<CinemachineVirtualCamera>();
             CM.Follow = transform;
             CM.LookAt = transform;
@@ -307,7 +308,6 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         }
     }
 
-
     public void Request_Game()
     {
         PV.RPC("Receive_GameRequest", PhotonTargets.All);
@@ -321,17 +321,34 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         foreach (var p in avc_p)
         {
             PlayerControl pc = p.GetComponent<PlayerControl>();
-            foreach (Transform child in VideoSpawnPoint)
+            for(int i = 0; i < VideoSpawnPoint.childCount; i++)
             {
-                if (pc.myUID.ToString() == child.name)
+                if (pc.myUID.ToString() == VideoSpawnPoint.GetChild(i).name)
                 {
-                    GameBoard.SetActive(true);
+                    Debug.Log(pc.myUID.ToString()+" " + VideoSpawnPoint.GetChild(i).name);
+                    Open_Close_GameBoard(GameBoard);
                     break;
                 }
+                
             }
         }
     }
+    void Open_Close_GameBoard(GameObject go)
+    {
+        if (go.activeSelf == false)
+        {
+            go.SetActive(true);
+        }
+        else
+        {
+            go.SetActive(false);
+        }
+    }
 
+    public void Back_Game()
+    {
+        GameBoard.SetActive(false);
+    }
     public void test()
     {
         Debug.Log("@@@@@@");

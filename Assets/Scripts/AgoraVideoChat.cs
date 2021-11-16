@@ -176,7 +176,7 @@ public class AgoraVideoChat : Photon.MonoBehaviour, IPunObservable
     private void OnLeaveChannelHandler(RtcStats stats)
     {
         if (!photonView.isMine)
-        {
+        { 
             return;
         }
 
