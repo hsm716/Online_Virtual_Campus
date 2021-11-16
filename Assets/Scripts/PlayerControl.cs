@@ -125,6 +125,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
                 grade_img.sprite = grade_sp[3];
                 break;
         }
+        GameBoard.SetActive(uiActive);
         if (PV.isMine)
         {
             //h = Input.GetAxisRaw("Horizontal");
@@ -242,7 +243,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             }
 
 
-            GameBoard.SetActive(uiActive);
+           
 
 
             /* if (anim.GetInteger("hAxisRaw") != h)
@@ -322,14 +323,15 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     public void Receive_GameRequest(long remoteUID)
     {
         Debug.Log(remoteUID);
-        if (uiActive == true)
+        Open_Close_GameBoard(remoteUID);
+       /* if (uiActive == true)
         {
             uiActive = false;
         }
         else
         {
             uiActive = true;
-        }
+        }*/
     }
 
     void Open_Close_GameBoard(long remoteUID)
@@ -688,7 +690,6 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             stream.SendNext(transform.rotation);
             stream.SendNext(grade);
             stream.SendNext(myUID);
-            stream.SendNext(uiActive);
             //stream.SendNext(transform.GetComponent<Rigidbody2D>().velocity);
         }
         else
@@ -697,7 +698,6 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             curRot = (Quaternion)stream.ReceiveNext();
             grade = (int)stream.ReceiveNext();
             myUID = (long)stream.ReceiveNext();
-            uiActive = (bool)stream.ReceiveNext();
             //transform.GetComponent<Rigidbody2D>().velocity = (Vector2)stream.ReceiveNext();
         }
     }
