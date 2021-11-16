@@ -22,7 +22,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
 
     public GameObject[] players;
 
-    public int curPlayer_Count = 0;
+    public int curPlayer_Count = 1;
     public void FindPlayers()
     {
         players = GameObject.FindGameObjectsWithTag("Player");
