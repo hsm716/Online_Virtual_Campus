@@ -17,12 +17,17 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
 
     public void JoinGame()
     {
-        for (int i = 0; i < GamePlayer_list.Length; i++) {
-            if (GamePlayer_list[i] == "빔") {
-                GamePlayer_list[i] = PhotonNetwork.player.NickName;
+        var players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach(var p in players)
+        {
+            if(p.GetComponent<PhotonView>().owner.NickName == PhotonNetwork.player.NickName)
+            {
+                p.GetComponent<PlayerControl>().isGaming = true;
                 break;
             }
         }
+        
     }
 
 
@@ -30,10 +35,6 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
 
     void Start()
     {
-        for(int i = 0; i < 100; i++)
-        {
-            GamePlayer_list[i] = "빔";
-        }
     }
 
     // Update is called once per frame
