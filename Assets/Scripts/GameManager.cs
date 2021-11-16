@@ -16,7 +16,9 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
 
     public int GameReader_ID;
 
-    GameObject[] players;
+    public GameObject[] players;
+
+    bool check_state;
 
     public void FindPlayers()
     {
@@ -24,9 +26,9 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     }
     public void JoinGame()
     {
-       
-        
-        foreach(var p in players)
+
+        FindPlayers();
+        foreach (var p in players)
         {
             if(p.GetComponent<PhotonView>().owner.NickName == PhotonNetwork.player.NickName)
             {
@@ -51,20 +53,24 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     private void Start()
     {
         FindPlayers();
-        foreach (var p in players)
-        {
-            if (p.GetComponent<PlayerControl>().isGameReader==true) 
-            {
-                StartButton.SetActive(true);
-                break;
-            }
-        }
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (StartButton.activeSelf ==true&&check_state==false)
+        {
+            check_state = true;
+            foreach (var p in players)
+            {
+                if (p.GetComponent<PlayerControl>().isGameReader == true)
+                {
+                    StartButton.SetActive(true);
+                    break;
+                }
+            }
+        }
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
