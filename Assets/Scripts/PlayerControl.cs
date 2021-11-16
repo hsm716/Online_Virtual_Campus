@@ -320,6 +320,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     [PunRPC]
     public void Receive_GameRequest(long remoteUID)
     {
+        Debug.Log(remoteUID);
         foreach (Transform item in VideoSpawnPoint)
         {
             if (remoteUID.ToString() == item.name)
