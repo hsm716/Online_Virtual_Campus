@@ -71,7 +71,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
 
     public Transform VideoSpawnPoint;
     public long myUID;
-    bool uiActive;
+    public bool uiActive;
     public AgoraVideoChat AVC;
     public GameObject GameBoard;
     
@@ -322,7 +322,14 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     public void Receive_GameRequest(long remoteUID)
     {
         Debug.Log(remoteUID);
-        Open_Close_GameBoard(remoteUID);
+        if (uiActive == true)
+        {
+            uiActive = false;
+        }
+        else
+        {
+            uiActive = true;
+        }
     }
 
     void Open_Close_GameBoard(long remoteUID)
