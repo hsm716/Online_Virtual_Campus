@@ -69,8 +69,8 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     public GameObject info_btn;
     string cur_url = "";
 
-
-    public int myUID;
+    public Transform VideoSpawnPoint;
+    public long myUID;
 
     public AgoraVideoChat AVC;
     GameObject GameBoard;
@@ -98,6 +98,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             CM.LookAt = transform;
             Location_text = GameObject.Find("Canvas").transform.GetChild(3).gameObject;
             Location_text.SetActive(true);
+            //myUID = AVC.GetUID();
         }
     }
 
@@ -320,9 +321,9 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         foreach (var p in avc_p)
         {
             PlayerControl pc = p.GetComponent<PlayerControl>();
-            foreach (var po in AVC.playerVideoList)
+            foreach (Transform child in VideoSpawnPoint)
             {
-                if (pc.myUID.ToString() == po.name)
+                if (pc.myUID.ToString() == child.name)
                 {
                     GameBoard.SetActive(true);
                     break;
@@ -666,7 +667,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             curPos = (Vector3)stream.ReceiveNext();
             curRot = (Quaternion)stream.ReceiveNext();
             grade = (int)stream.ReceiveNext();
-            myUID = (int)stream.ReceiveNext();
+            myUID = (long)stream.ReceiveNext();
             //transform.GetComponent<Rigidbody2D>().velocity = (Vector2)stream.ReceiveNext();
         }
     }

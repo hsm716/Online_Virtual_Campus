@@ -28,8 +28,8 @@ public class AgoraVideoChat : Photon.MonoBehaviour, IPunObservable
     [SerializeField] private string channel;
     private string originalChannel;
     private IRtcEngine mRtcEngine;
-    public uint myUID = 0;
-
+    private uint myUID = 0;
+    public long a;
     [Header("Player Video Panel Properties")]
     [SerializeField] private GameObject userVideoPrefab;
     [SerializeField] private Transform spawnPoint;
@@ -93,7 +93,10 @@ public class AgoraVideoChat : Photon.MonoBehaviour, IPunObservable
         mRtcEngine.JoinChannel(channel, null, 0);
     }
 
-
+    public long GetUID()
+    {
+        return a;
+    }
 
     public string GetCurrentChannel() => channel;
 
@@ -153,8 +156,8 @@ public class AgoraVideoChat : Photon.MonoBehaviour, IPunObservable
         }
 
         myUID = uid;
-        transform.GetComponent<PlayerControl>().myUID = (int)myUID;
-
+        a = uid;
+        transform.GetComponent<PlayerControl>().myUID = a;
         CreateUserVideoSurface(uid, true);
     }
 

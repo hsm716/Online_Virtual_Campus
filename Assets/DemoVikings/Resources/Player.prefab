@@ -3960,6 +3960,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   appID: 7ad1f4b9ff2a4126a8a0afc74721e126
   channel: unity3d
+  a: 0
   userVideoPrefab: {fileID: 1272405541118282648, guid: 9c09429efb77d4336ab9650b8f03362e,
     type: 3}
   spawnPoint: {fileID: 7352240331210415478}
@@ -4024,6 +4025,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: d399c76ea1f583e41a09d32637241b41, type: 3}
   interaction_btn: {fileID: 8772539347893875326}
   info_btn: {fileID: 8199457034546497506}
+  VideoSpawnPoint: {fileID: 0}
   myUID: 0
   AVC: {fileID: 3592089908839912609}
   bgm: {fileID: 1921688623525618165}
