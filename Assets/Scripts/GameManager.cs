@@ -38,9 +38,11 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
 
     public Transform players_loc;
     public GameObject TotalPanel;
-    public Text Loser_Txt;
+    public Text curPlayer_Txt;
     public Slider time_slider;
-    public string loser_str;
+    public string curPlayer_str;
+
+    public int curIdx;
     
 
     public void FindPlayers()
@@ -137,33 +139,50 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     }
     public void Select_Number()
     {
-        if (curNumber.ToString().Contains('3')|| curNumber.ToString().Contains('6')|| curNumber.ToString().Contains('9'))
+        if (curPlayer_str == PhotonNetwork.player.NickName)
         {
-            loser_str = PhotonNetwork.player.NickName;
-            PV.RPC("Quit_Game", PhotonTargets.All, loser_str);
+            if (curNumber.ToString().Contains('3') || curNumber.ToString().Contains('6') || curNumber.ToString().Contains('9'))
+            {
+                curPlayer_str = PhotonNetwork.player.NickName;
+                PV.RPC("Quit_Game", PhotonTargets.All, curPlayer_str);
 
-        }
-        else
-        {
-            PV.RPC("InCrease_CurNumber", PhotonTargets.All);
-            time = 5f;
+            }
+            else
+            {
+                PV.RPC("InCrease_CurNumber", PhotonTargets.All);
+                time = 5f;
+            }
         }
     }
     public void Select_Clap()
     {
-        if (!(curNumber.ToString().Contains('3') || curNumber.ToString().Contains('6') || curNumber.ToString().Contains('9')))
+        if (curPlayer_str == PhotonNetwork.player.NickName)
         {
-            loser_str = PhotonNetwork.player.NickName;
+            if (!(curNumber.ToString().Contains('3') || curNumber.ToString().Contains('6') || curNumber.ToString().Contains('9')))
+            {
+                curPlayer_str = PhotonNetwork.player.NickName;
 
-            PV.RPC("Quit_Game", PhotonTargets.All,loser_str);
-            
-        }
-        else
-        {
-            PV.RPC("InCrease_CurNumber", PhotonTargets.All);
-            time = 5f;
+                PV.RPC("Quit_Game", PhotonTargets.All, curPlayer_str);
+
+            }
+            else
+            {
+                PV.RPC("InCrease_CurNumber", PhotonTargets.All);
+                time = 5f;
+            }
         }
     }
+    [PunRPC]
+    public void Next_Data()
+    {
+        curIdx++;
+        if (curIdx > players.Count())
+        {
+            curIdx = 0;
+        }
+        curPlayer_str = players[curIdx].GetComponent<PlayerControl>().NickName.text;
+    }
+
 
     [PunRPC]
     public void Quit_Game(string name)
@@ -180,7 +199,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
         if (name != "")
         {
             TotalPanel.SetActive(true);
-            Loser_Txt.text = name + " 패배";
+            curPlayer_Txt.text = name + " 패배";
         }
         JoinButton.GetComponent<Button>().interactable = true;
         StartButton.GetComponent<Button>().interactable = false;
@@ -197,7 +216,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     }
     public void TimeOver()
     {
-        loser_str = PhotonNetwork.player.NickName;
+        curPlayer_str = PhotonNetwork.player.NickName;
         Quit_Game("");
         PV.RPC("Quit_Game", PhotonTargets.All);
     }
@@ -242,8 +261,9 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
             stream.SendNext(curPlayer_Count);
             stream.SendNext(isGaming);
             stream.SendNext(curNumber);
-            stream.SendNext(loser_str);
-            stream.SendNext(Loser_Txt.text);
+            stream.SendNext(curPlayer_str);
+            stream.SendNext(curPlayer_Txt.text);
+            stream.SendNext(curIdx);
         }
         else
         {
@@ -252,8 +272,9 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
             curPlayer_Count = (int)stream.ReceiveNext();
             isGaming = (bool)stream.ReceiveNext();
             curNumber = (int)stream.ReceiveNext();
-            loser_str = (string)stream.ReceiveNext();
-            Loser_Txt.text = (string)stream.ReceiveNext();
+            curPlayer_str = (string)stream.ReceiveNext();
+            curPlayer_Txt.text = (string)stream.ReceiveNext();
+            curIdx = (int)stream.ReceiveNext();
 
         }
     }
