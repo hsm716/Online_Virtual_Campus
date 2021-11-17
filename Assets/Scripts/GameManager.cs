@@ -131,7 +131,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
         if (curNumber.ToString().Contains('3')|| curNumber.ToString().Contains('6')|| curNumber.ToString().Contains('9'))
         {
             loser_str = PhotonNetwork.player.NickName;
-            PV.RPC("Quit_Game1", PhotonTargets.All, loser_str);
+            PV.RPC("Quit_Game", PhotonTargets.All, loser_str);
 
         }
         else
@@ -146,7 +146,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
         {
             loser_str = PhotonNetwork.player.NickName;
 
-            PV.RPC("Quit_Game1", PhotonTargets.All,loser_str);
+            PV.RPC("Quit_Game", PhotonTargets.All,loser_str);
             
         }
         else
@@ -155,19 +155,19 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
             time = 5f;
         }
     }
-    [PunRPC]
-    public void Quit_Game1(string name)
-    {
-        Loser_Txt.text = name+ " 패배";
-    }
 
     [PunRPC]
-    public void Quit_Game()
+    public void Quit_Game(string name)
     {
         isGaming = false;
         InGamePanel.SetActive(false);
         curPlayer_Count = 1;
         curNumber = 1;
+        if (name != "")
+        {
+            TotalPanel.SetActive(true);
+            Loser_Txt.text = name + " 패배";
+        }
         JoinButton.GetComponent<Button>().interactable = true;
         StartButton.GetComponent<Button>().interactable = false;
         var gp = GameObject.FindGameObjectsWithTag("game_player");
@@ -188,7 +188,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     public void TimeOver()
     {
         loser_str = PhotonNetwork.player.NickName;
-        Quit_Game();
+        Quit_Game("");
         PV.RPC("Quit_Game", PhotonTargets.All);
     }
 
