@@ -95,7 +95,20 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     {
         foreach (var p in players)
         {
-            if (p.GetComponent<PhotonView>().owner.NickName == PhotonNetwork.player.NickName)
+            if (p.GetComponent<PlayerControl>().isReady == true)
+            {
+                InGamePanel.SetActive(true);
+                p.GetComponent<PlayerControl>().isGaming = true;
+                GameObject po = PhotonNetwork.Instantiate("InGame_369_player", Vector3.zero, Quaternion.identity, 0);
+                po.transform.SetParent(players_loc);
+                po.transform.localScale = new Vector3(1f, 1f, 1f);
+                po.GetComponent<Player_369>().nick_name.text = p.GetComponent<PlayerControl>().NickName.text;
+            }
+            else
+            {
+                GameUI.SetActive(false);
+            }
+            /*if (p.GetComponent<PhotonView>().owner.NickName == PhotonNetwork.player.NickName)
             {
                 if(p.GetComponent<PlayerControl>().isReady == true)
                 {
@@ -110,12 +123,8 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
                 {
                     GameUI.SetActive(false);
                 }
-
-                
-                
-            }
+            }*/
         }
-        
     }
     [PunRPC]
     public void InCrease_CurNumber()
