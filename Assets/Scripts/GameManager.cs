@@ -261,6 +261,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
                     
                 }
             }
+
         }
         GameUI.SetActive(false);
         isFinish = false;
