@@ -39,6 +39,9 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     public Transform players_loc;
     public GameObject TotalPanel;
     public Text curPlayer_Txt;
+
+    public Text curPlayerTop_Txt;
+
     public Slider time_slider;
     public string curPlayer_str;
 
@@ -278,6 +281,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
             stream.SendNext(curPlayer_Txt.text);
             stream.SendNext(curIdx);
             stream.SendNext(isFinish);
+            stream.SendNext(curPlayerTop_Txt.text);
         }
         else
         {
@@ -290,6 +294,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
             curPlayer_Txt.text = (string)stream.ReceiveNext();
             curIdx = (int)stream.ReceiveNext();
             isFinish = (bool)stream.ReceiveNext();
+            curPlayerTop_Txt.text = (string)stream.ReceiveNext();
 
         }
     }
