@@ -219,6 +219,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     public void TimeOver()
     {
         PV.RPC("Quit_Game", PhotonTargets.All,"");
+        isFinish = false;
     }
 
     public void Check_result()
@@ -241,9 +242,9 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
         curNumber_txt.text = curNumber + "";
         time_slider.value = time / 5f;
         time -= Time.deltaTime;
-        if (time < 0f && isGaming)
+        if (time < 0f && isGaming&& isFinish==false)
         {
-            isGaming = false;
+            isFinish=true;
             TimeOver();
         }
         if (isGaming&&isFinish==true)
