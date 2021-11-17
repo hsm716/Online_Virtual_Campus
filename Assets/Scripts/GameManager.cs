@@ -108,7 +108,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
         isGaming = true;
         foreach (var p in players)
         {
-            if (p.GetComponent<PlayerControl>().NickName.text == PhotonNetwork.player.NickName)
+            if (p.GetComponent<PlayerControl>().player_interface.gameObject.activeSelf==true)
             {
                 foreach(var a in p.GetComponent<PlayerControl>().UI_OnOff)
                 {
@@ -253,8 +253,8 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
             p.GetComponent<PlayerControl>().isGameReader = false;
             p.GetComponent<PlayerControl>().isGaming = false;
 
-            if (p.GetComponent<PlayerControl>().NickName.text == PhotonNetwork.player.NickName)
-            {
+            if (p.GetComponent<PlayerControl>().player_interface.gameObject.activeSelf == true) 
+            { 
                 foreach (var a in p.GetComponent<PlayerControl>().UI_OnOff)
                 {
                     a.SetActive(true);
