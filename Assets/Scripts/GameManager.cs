@@ -100,6 +100,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
             if (p.GetComponent<PlayerControl>().isReady == true)
             {
                 InGamePanel.SetActive(true);
+                time = 5f;
                 p.GetComponent<PlayerControl>().isGaming = true;
                 GameObject po = PhotonNetwork.Instantiate("InGame_369_player", Vector3.zero, Quaternion.identity, 0);
                 po.transform.SetParent(players_loc);
@@ -192,6 +193,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     {
         isGaming = false;
         var gp = GameObject.FindGameObjectsWithTag("game_player");
+        players = new GameObject[0];
         foreach (var g in gp)
         {
             Destroy(g);
