@@ -265,6 +265,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
             stream.SendNext(curPlayer_str);
             stream.SendNext(curPlayer_Txt.text);
             stream.SendNext(curIdx);
+            stream.SendNext(isFinish);
         }
         else
         {
@@ -276,6 +277,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
             curPlayer_str = (string)stream.ReceiveNext();
             curPlayer_Txt.text = (string)stream.ReceiveNext();
             curIdx = (int)stream.ReceiveNext();
+            isFinish = (bool)stream.ReceiveNext();
 
         }
     }
