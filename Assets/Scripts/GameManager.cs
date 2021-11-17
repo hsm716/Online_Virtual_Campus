@@ -195,6 +195,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
             curIdx = 0;
         }
         curPlayer_str = players[curIdx].GetComponent<PlayerControl>().NickName.text;
+        curPlayerTop_Txt.text = curPlayer_str;
     }
 
 
