@@ -213,13 +213,13 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
             curNumber_txt.text = "짝!";
         else
             curNumber_txt.text = curNumber + "";
-        //time_slider.value = time / 5f;
-        //time -= Time.deltaTime;
-        /*if (time < 0f&&isGaming)
+        time_slider.value = time / 5f;
+        time -= Time.deltaTime;
+        if (time < 0f&&isGaming)
         {
             isGaming = false;
             TimeOver();
-        }*/
+        }
         if (isGaming&&isFinish==true)
         {
             isFinish = false;
@@ -231,7 +231,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
         if (stream.isWriting)
         {
             //stream.SendNext(GamePlayer_list);
-           // stream.SendNext(time);
+            stream.SendNext(time);
             stream.SendNext(curPlayer_Count);
             stream.SendNext(isGaming);
             stream.SendNext(curNumber);
@@ -241,7 +241,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
         else
         {
             //GamePlayer_list = (string[])stream.ReceiveNext();
-            //time = (float)stream.ReceiveNext();
+            time = (float)stream.ReceiveNext();
             curPlayer_Count = (int)stream.ReceiveNext();
             isGaming = (bool)stream.ReceiveNext();
             curNumber = (int)stream.ReceiveNext();
