@@ -4037,6 +4037,7 @@ MonoBehaviour:
   isSpawn: 0
   myGameCharacter: {fileID: 4535334561895358279, guid: c0ee8b19e624a2b4db0cfa2d05a72d4f,
     type: 3}
+  player_interface: {fileID: 3749579428109638120}
   UI_OnOff:
   - {fileID: 7127739757800511903}
   - {fileID: 4846899356355836032}
