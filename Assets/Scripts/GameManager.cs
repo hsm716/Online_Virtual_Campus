@@ -150,7 +150,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
             else
             {
                 PV.RPC("InCrease_CurNumber", PhotonTargets.All);
-                time = 5f;
+                
                 PV.RPC("Next_Data", PhotonTargets.All);
             }
         }
@@ -169,7 +169,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
             else
             {
                 PV.RPC("InCrease_CurNumber", PhotonTargets.All);
-                time = 5f;
+                
                 PV.RPC("Next_Data", PhotonTargets.All);
             }
         }
@@ -177,6 +177,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     [PunRPC]
     public void Next_Data()
     {
+        time = 5f;
         curIdx++;
         if (curIdx >= players.Count())
         {
