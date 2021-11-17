@@ -160,6 +160,11 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     public void Quit_Game(string name)
     {
         isGaming = false;
+        var gp = GameObject.FindGameObjectsWithTag("game_player");
+        foreach (var g in gp)
+        {
+            Destroy(g);
+        }
         InGamePanel.SetActive(false);
         curPlayer_Count = 1;
         curNumber = 1;
@@ -170,11 +175,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
         }
         JoinButton.GetComponent<Button>().interactable = true;
         StartButton.GetComponent<Button>().interactable = false;
-        var gp = GameObject.FindGameObjectsWithTag("game_player");
-        foreach(var g in gp)
-        {
-            Destroy(g);
-        }
+        
         foreach (var p in players)
         {
             p.GetComponent<PlayerControl>().isReady = false;
