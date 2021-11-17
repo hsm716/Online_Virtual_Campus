@@ -178,7 +178,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     public void Next_Data()
     {
         curIdx++;
-        if (curIdx > players.Count())
+        if (curIdx >= players.Count())
         {
             curIdx = 0;
         }
@@ -218,9 +218,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     }
     public void TimeOver()
     {
-        curPlayer_str = PhotonNetwork.player.NickName;
-        Quit_Game("");
-        PV.RPC("Quit_Game", PhotonTargets.All);
+        PV.RPC("Quit_Game", PhotonTargets.All,"");
     }
 
     public void Check_result()
@@ -241,13 +239,13 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     {
         curPlayerCount_txt.text = curPlayer_Count + " / " + PhotonNetwork.playerList.Count();
         curNumber_txt.text = curNumber + "";
-        //time_slider.value = time / 5f;
-        //time -= Time.deltaTime;
-        /*if (time < 0f&&isGaming)
+        time_slider.value = time / 5f;
+        time -= Time.deltaTime;
+        if (time < 0f && isGaming)
         {
             isGaming = false;
             TimeOver();
-        }*/
+        }
         if (isGaming&&isFinish==true)
         {
             isFinish = false;
@@ -259,7 +257,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
         if (stream.isWriting)
         {
             //stream.SendNext(GamePlayer_list);
-           // stream.SendNext(time);
+            stream.SendNext(time);
             stream.SendNext(curPlayer_Count);
             stream.SendNext(isGaming);
             stream.SendNext(curNumber);
@@ -270,7 +268,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
         else
         {
             //GamePlayer_list = (string[])stream.ReceiveNext();
-            //time = (float)stream.ReceiveNext();
+            time = (float)stream.ReceiveNext();
             curPlayer_Count = (int)stream.ReceiveNext();
             isGaming = (bool)stream.ReceiveNext();
             curNumber = (int)stream.ReceiveNext();
