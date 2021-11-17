@@ -41,7 +41,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     public Text Loser_Txt;
     public Slider time_slider;
     public string loser_str;
-    
+    public bool isJJak = false;
 
     public void FindPlayers()
     {
@@ -71,7 +71,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     public void StartGame()
     {
         time = 5f;
-        curNumber = 1;
+        curNumber = 0;
         FindPlayers();
         isGaming = true;
         InGamePanel.SetActive(true);
@@ -128,7 +128,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     }
     public void Select_Number()
     {
-        if (curNumber.ToString().Contains('3')|| curNumber.ToString().Contains('6')|| curNumber.ToString().Contains('9'))
+        if ((curNumber+1).ToString().Contains('3')|| (curNumber + 1).ToString().Contains('6')|| (curNumber + 1).ToString().Contains('9'))
         {
             loser_str = PhotonNetwork.player.NickName;
             PV.RPC("Quit_Game",PhotonTargets.All);
@@ -137,12 +137,13 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
         else
         {
             PV.RPC("InCrease_CurNumber", PhotonTargets.All);
+            isJJak = false;
             time = 5f;
         }
     }
     public void Select_Clap()
     {
-        if (!(curNumber.ToString().Contains('3') || curNumber.ToString().Contains('6') || curNumber.ToString().Contains('9')))
+        if (!((curNumber + 1).ToString().Contains('3') || (curNumber + 1).ToString().Contains('6') || (curNumber + 1).ToString().Contains('9')))
         {
             loser_str = PhotonNetwork.player.NickName;
 
@@ -152,6 +153,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
         else
         {
             PV.RPC("InCrease_CurNumber", PhotonTargets.All);
+            isJJak = true;
             time = 5f;
         }
     }
@@ -207,7 +209,10 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     private void Update()
     {
         curPlayerCount_txt.text = curPlayer_Count + " / " + PhotonNetwork.playerList.Count();
-        curNumber_txt.text = curNumber + "";
+        if(isJJak)
+            curNumber_txt.text = "짝!";
+        else
+            curNumber_txt.text = curNumber + "";
         //time_slider.value = time / 5f;
         //time -= Time.deltaTime;
         /*if (time < 0f&&isGaming)
