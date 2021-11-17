@@ -46,7 +46,12 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     public string curPlayer_str;
 
     public int curIdx;
-    
+
+
+    public AudioSource audio_player;
+    public AudioClip fail_snd;
+    public AudioClip number_snd;
+    public AudioClip clap_snd;
 
     public void FindPlayers()
     {
@@ -95,11 +100,23 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
 
 
         curPlayer_str = players[0].GetComponent<PlayerControl>().NickName.text;
+        curPlayerTop_Txt.text = curPlayer_str+"님 차례";
     }
     [PunRPC]
     public void SetGaming()
     {
         isGaming = true;
+        foreach (var p in players)
+        {
+            if (p.GetComponent<PlayerControl>().NickName.text == PhotonNetwork.player.NickName)
+            {
+                foreach(var a in p.GetComponent<PlayerControl>().UI_OnOff)
+                {
+                    a.SetActive(false);
+                }
+                break;
+            }
+        }
     }
 
     [PunRPC]
@@ -162,7 +179,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
             {
                 PV.RPC("InCrease_CurNumber", PhotonTargets.All);
                 
-                PV.RPC("Next_Data", PhotonTargets.All);
+                PV.RPC("Next_Data", PhotonTargets.All,1);
             }
         }
     }
@@ -181,15 +198,23 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
             {
                 PV.RPC("InCrease_CurNumber", PhotonTargets.All);
                 
-                PV.RPC("Next_Data", PhotonTargets.All);
+                PV.RPC("Next_Data", PhotonTargets.All,0);
             }
         }
     }
     [PunRPC]
-    public void Next_Data()
+    public void Next_Data(int type)
     {
         time = 5f;
         curIdx++;
+        if (type == 0)
+        {
+            audio_player.PlayOneShot(clap_snd);
+        }
+        else
+        {
+            audio_player.PlayOneShot(number_snd);
+        }
         if (curIdx >= players.Count())
         {
             curIdx = 0;
@@ -204,7 +229,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     {
         isGaming = false;
         isFinish = true;
-        
+        audio_player.PlayOneShot(fail_snd);
         var gp = GameObject.FindGameObjectsWithTag("game_player");
         players = new GameObject[0];
         foreach (var g in gp)
@@ -227,6 +252,15 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
             p.GetComponent<PlayerControl>().isReady = false;
             p.GetComponent<PlayerControl>().isGameReader = false;
             p.GetComponent<PlayerControl>().isGaming = false;
+
+            if (p.GetComponent<PlayerControl>().NickName.text == PhotonNetwork.player.NickName)
+            {
+                foreach (var a in p.GetComponent<PlayerControl>().UI_OnOff)
+                {
+                    a.SetActive(true);
+                    
+                }
+            }
         }
         GameUI.SetActive(false);
         isFinish = false;
