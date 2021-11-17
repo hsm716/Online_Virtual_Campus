@@ -131,8 +131,8 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
         if (curNumber.ToString().Contains('3')|| curNumber.ToString().Contains('6')|| curNumber.ToString().Contains('9'))
         {
             loser_str = PhotonNetwork.player.NickName;
-            PV.RPC("Quit_Game",PhotonTargets.All);
-            
+            PV.RPC("Quit_Game", PhotonTargets.All, loser_str);
+
         }
         else
         {
@@ -146,7 +146,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
         {
             loser_str = PhotonNetwork.player.NickName;
 
-            PV.RPC("Quit_Game", PhotonTargets.All);
+            PV.RPC("Quit_Game", PhotonTargets.All,loser_str);
             
         }
         else
@@ -155,15 +155,17 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
             time = 5f;
         }
     }
-
+    [PunRPC]
+    public void Quit_Game(string name)
+    {
+        Loser_Txt.text = name+ " 패배";
+    }
 
     [PunRPC]
     public void Quit_Game()
     {
         isGaming = false;
         InGamePanel.SetActive(false);
-        TotalPanel.SetActive(true);
-        Loser_Txt.text = loser_str + " 패배";
         curPlayer_Count = 1;
         curNumber = 1;
         JoinButton.GetComponent<Button>().interactable = true;
