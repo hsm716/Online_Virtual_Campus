@@ -31,4 +31,14 @@ MonoBehaviour:
   - FlipX
   - InvitePlayerToPartyChannel
   - SendChatMessage
+  - Receive_GameRequest
+  - Request_Game
+  - panel_On
+  - Increase_Count
+  - Quit_Game
+  - InCrease_CurNumber
+  - SetLoserString
+  - Quit_Game1
+  - Next_Data
+  - SetGaming
   DisableAutoOpenWizard: 1

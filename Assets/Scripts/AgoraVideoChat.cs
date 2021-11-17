@@ -7,58 +7,62 @@ using UnityEngine.UI;
 
 
 
-/* NOTE: 
+/* NOTE:
  *
  * This script handles the Agora-related functionality:
  * - Joining / Leaving Channels
  * - Creating / Deleting VideoSurface objects that enable us to see the camera feed of Agora party chat
- * - Managing the UI that contains the VideoSurface objects 
+ * - Managing the UI that contains the VideoSurface objects
  *
  */
 
 
 
-public class AgoraVideoChat : Photon.MonoBehaviour
+public class AgoraVideoChat : Photon.MonoBehaviour, IPunObservable
 {
     [Header("Agora Properties")]
 
     static public AgoraVideoChat instance;
     // *** ADD YOUR APP ID HERE BEFORE GETTING STARTED *** //
     [SerializeField] private string appID = "ADD YOUR APP ID HERE";
-    [SerializeField] private string channel;
+    [SerializeField] private string channel = "unity3D";
     private string originalChannel;
     private IRtcEngine mRtcEngine;
     private uint myUID = 0;
-
+    public long a;
     [Header("Player Video Panel Properties")]
     [SerializeField] private GameObject userVideoPrefab;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private RectTransform content;
     [SerializeField] private float spaceBetweenUserVideos = 150f;
-    private List<GameObject> playerVideoList;
+    public List<GameObject> playerVideoList;
+    public List<string> player_Name_list;
 
     public delegate void AgoraCustomEvent();
     public static event AgoraCustomEvent PlayerChatIsEmpty;
     public static event AgoraCustomEvent PlayerChatIsPopulated;
 
+
+
+
     void Start()
     {
-        
+
         if (!photonView.isMine)
         {
             return;
         }
         instance = this;
-        
+
         playerVideoList = new List<GameObject>();
+        player_Name_list = new List<string>();
 
         // Setup Agora Engine and Callbacks.
         if(mRtcEngine != null)
         {
             IRtcEngine.Destroy();
         }
-
-        channel = Random.Range(0, 1000).ToString();
+        //channel = Random.Range(0, 1000).ToString();
         originalChannel = channel;
 
         // -- These are all necessary steps to initialize the Agora engine -- //
@@ -83,15 +87,18 @@ public class AgoraVideoChat : Photon.MonoBehaviour
         mRtcEngine.OnLeaveChannel = OnLeaveChannelHandler;
         mRtcEngine.OnUserOffline = OnUserOfflineHandler;
 
-        // Your video feed will not render if EnableVideo() isn't called. 
+        // Your video feed will not render if EnableVideo() isn't called.
         mRtcEngine.EnableVideo();
         mRtcEngine.EnableVideoObserver();
 
-        // By setting our UID to "0" the Agora Engine creates a unique UID and returns it in the OnJoinChannelSuccess callback. 
+        // By setting our UID to "0" the Agora Engine creates a unique UID and returns it in the OnJoinChannelSuccess callback.
         mRtcEngine.JoinChannel(channel, null, 0);
     }
 
-
+    public long GetUID()
+    {
+        return a;
+    }
 
     public string GetCurrentChannel() => channel;
 
@@ -100,7 +107,7 @@ public class AgoraVideoChat : Photon.MonoBehaviour
         if (!photonView.isMine)
         {
             return;
-        } 
+        }
 
         mRtcEngine.LeaveChannel();
 
@@ -108,8 +115,8 @@ public class AgoraVideoChat : Photon.MonoBehaviour
         mRtcEngine.EnableVideo();
         mRtcEngine.EnableVideoObserver();
 
-        
-        
+
+
         channel = remoteChannelName;
     }
 
@@ -151,7 +158,8 @@ public class AgoraVideoChat : Photon.MonoBehaviour
         }
 
         myUID = uid;
-
+        a = uid;
+        transform.GetComponent<PlayerControl>().myUID = a;
         CreateUserVideoSurface(uid, true);
     }
 
@@ -170,7 +178,7 @@ public class AgoraVideoChat : Photon.MonoBehaviour
     private void OnLeaveChannelHandler(RtcStats stats)
     {
         if (!photonView.isMine)
-        {
+        { 
             return;
         }
 
@@ -179,6 +187,7 @@ public class AgoraVideoChat : Photon.MonoBehaviour
             Destroy(player.gameObject);
         }
         playerVideoList.Clear();
+        player_Name_list.Clear();
     }
 
     // Remote User Leaves the Channel.
@@ -226,6 +235,7 @@ public class AgoraVideoChat : Photon.MonoBehaviour
         newUserVideo.transform.rotation = Quaternion.Euler(Vector3.right * -180);
 
         playerVideoList.Add(newUserVideo);
+        player_Name_list.Add(newUserVideo.name);
 
         // Update our VideoSurface to reflect new users
         VideoSurface newVideoSurface = newUserVideo.GetComponent<VideoSurface>();
@@ -255,6 +265,7 @@ public class AgoraVideoChat : Photon.MonoBehaviour
             if (player.name == deletedUID.ToString())
             {
                 playerVideoList.Remove(player);
+                player_Name_list.Remove(player.name);
                 Destroy(player.gameObject);
                 break;
             }
@@ -290,6 +301,8 @@ public class AgoraVideoChat : Photon.MonoBehaviour
         }
     }
 
+
+
     public void TerminateAgoraEngine()
     {
         if (mRtcEngine != null)
@@ -311,11 +324,20 @@ public class AgoraVideoChat : Photon.MonoBehaviour
         TerminateAgoraEngine();
     }
 
-    // Cleaning up the Agora engine during OnApplicationQuit() is an essential part of the Agora process with Unity. 
+    // Cleaning up the Agora engine during OnApplicationQuit() is an essential part of the Agora process with Unity.
     private void OnApplicationQuit()
     {
         TerminateAgoraEngine();
     }
-
-    
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.isWriting)
+        {
+            stream.SendNext(channel);
+        }
+        else
+        {
+            channel = (string)stream.ReceiveNext();
+        }
+    }
 }

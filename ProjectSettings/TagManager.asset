@@ -8,6 +8,7 @@ TagManager:
   - Trigger_Check
   - "\uC790\uC720\uAD00"
   - "\uC0C1\uD638\uC791\uC6A9_\uAD6C\uC5ED"
+  - game_player
   layers:
   - Default
   - TransparentFX

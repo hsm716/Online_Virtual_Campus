@@ -36,7 +36,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     private Animator anim;
 
     public SpriteRenderer SR;
-    
+
     Vector2 moveVec;
 
     //Mobile Key Var
@@ -69,18 +69,32 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     public GameObject info_btn;
     string cur_url = "";
 
+    public Transform VideoSpawnPoint;
+    public long myUID;
+    public bool uiActive;
+    public AgoraVideoChat AVC;
+    public GameObject GameBoard;
 
-    
+    public bool isReady;
+    public bool isGaming;
+    public bool isGameReader;
+    public bool isSpawn;
+
+    public Player_369 myGameCharacter;
+
+    public InputField ChatInput;
+
     private void Awake()
     {
 
-        
+
         NickName.text = PV.owner.NickName;
         rgbd2d = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
     }
     private void Start()
     {
+        GameBoard = GameObject.Find("Canvas").transform.GetChild(4).gameObject;
         if (!PV.isMine)
         {
             myUI.SetActive(false);
@@ -94,6 +108,9 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             CM.LookAt = transform;
             Location_text = GameObject.Find("Canvas").transform.GetChild(3).gameObject;
             Location_text.SetActive(true);
+            uiActive = false;
+
+            ChatInput = GameObject.Find("chatInputField").GetComponent<InputField>();
         }
     }
 
@@ -119,72 +136,90 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
                 grade_img.sprite = grade_sp[3];
                 break;
         }
+
+        //GameBoard.SetActive(uiActive);
         if (PV.isMine)
         {
-            //h = Input.GetAxisRaw("Horizontal");
-            //v = Input.GetAxisRaw("Vertical");
-            
-            h = Input.GetAxisRaw("Horizontal") + right_Value + left_Value;
-            v = Input.GetAxisRaw("Vertical") + up_Value + down_Value;
-
-            bgm.volume = bgm_slider.value;
-
-            ButtonUp();
-
-            if(Mathf.Abs(joystick.Horizontal) > 0.2f || Mathf.Abs(joystick.Vertical) > 0.2f)
+            if (Input.GetKeyDown(KeyCode.Return))
             {
-                if(Mathf.Abs(joystick.Horizontal) > Mathf.Abs(joystick.Vertical))
+                ChatInput.Select();
+            }
+            if (!ChatInput.isFocused)
+            {
+    //h = Input.GetAxisRaw("Horizontal");
+                //v = Input.GetAxisRaw("Vertical");
+
+                h = Input.GetAxisRaw("Horizontal") + right_Value + left_Value;
+                v = Input.GetAxisRaw("Vertical") + up_Value + down_Value;
+
+                bgm.volume = bgm_slider.value;
+
+                ButtonUp();
+    /*            if (isGaming && isSpawn == false)
                 {
-                    v = 0;
-                    if(joystick.Horizontal > 0.2f)
+                    isSpawn = true;
+                    //GameObject po = PhotonNetwork.Instantiate("InGame_369_player", Vector3.zero, Quaternion.identity, 0);
+                    Player_369 po = Instantiate(myGameCharacter, Vector3.zero, Quaternion.identity);
+                    po.transform.SetParent(GameManager.instance.players_loc);
+                    po.transform.localScale = new Vector3(1f, 1f, 1f);
+                    po.nick_name.text = PhotonNetwork.player.NickName;
+
+                }*/
+                if (Mathf.Abs(joystick.Horizontal) > 0.2f || Mathf.Abs(joystick.Vertical) > 0.2f)
+                {
+                    if(Mathf.Abs(joystick.Horizontal) > Mathf.Abs(joystick.Vertical))
                     {
-                        h = 1;
-                        ButtonPress(3); //right : 3
-                        right_Down = true;
-                    }
-                    else if(joystick.Horizontal < -0.2f)
-                    {
-                        h = -1;
-                        ButtonPress(2); //left : 2
-                        left_Down = true;
+                        v = 0;
+                        if(joystick.Horizontal > 0.2f)
+                        {
+                            h = 1;
+                            ButtonPress(3); //right : 3
+                            right_Down = true;
+                        }
+                        else if(joystick.Horizontal < -0.2f)
+                        {
+                            h = -1;
+                            ButtonPress(2); //left : 2
+                            left_Down = true;
+                        }
+                        else
+                        {
+                            h = 0;
+                            left_Up = true;
+                            right_Up = true;
+                        }
                     }
                     else
                     {
                         h = 0;
-                        left_Up = true;
-                        right_Up = true;
+                        if (joystick.Vertical > 0.2f)
+                        {
+                            v = 1;
+                            ButtonPress(0); //up : 0
+                            up_Down = true;
+                        }
+                        else if(joystick.Vertical < -0.2f)
+                        {
+                            v = -1;
+                            ButtonPress(1); //down : 1
+                            down_Down = true;
+                        }
+                        else
+                        {
+                            v = 0;
+                            down_Up = true;
+                            up_Up = true;
+                        }
                     }
                 }
-                else
-                {
-                    h = 0;
-                    if (joystick.Vertical > 0.2f)
-                    {
-                        v = 1;
-                        ButtonPress(0); //up : 0
-                        up_Down = true;
-                    }
-                    else if(joystick.Vertical < -0.2f)
-                    {
-                        v = -1;
-                        ButtonPress(1); //down : 1
-                        down_Down = true;
-                    }
-                    else
-                    {
-                        v = 0;
-                        down_Up = true;
-                        up_Up = true;
-                    }
-                }
+
+
             }
-
-
             bool hDown = Input.GetButtonDown("Horizontal") || left_Down || right_Down;
             bool vDown = Input.GetButtonDown("Vertical") || up_Down || down_Down;
             bool hUp = Input.GetButtonUp("Horizontal") || left_Up || right_Up;
             bool vUp = Input.GetButtonUp("Vertical") || up_Up || down_Up;
-
+            
 
             if (h != 0)
             {
@@ -200,7 +235,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             {
                 anim.SetBool("isRun_back", true);
                 anim.SetBool("isRun_mid", true);
-                
+
             }
             else if (v == 0)
             {
@@ -234,7 +269,10 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             {
                 anim.SetBool("isRun_mid", false);
             }
-            
+
+
+
+
 
             /* if (anim.GetInteger("hAxisRaw") != h)
              {
@@ -250,6 +288,8 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
              {
                  anim.SetBool("isChange", false);
              }*/
+
+
         }
         else
         {
@@ -267,9 +307,9 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     {
         rgbd2d.velocity = Vector2.zero;
         rgbd2d.angularVelocity =0f;
-       
+
         moveVec = isHorizontalMove ? new Vector2(h, 0) : new Vector2(0, v);
-       
+
         //isHorizontalMove ? new Vector2(h, 0) : new Vector2(0, v);
         rgbd2d.MovePosition(rgbd2d.position + moveVec.normalized * Speed * Time.fixedDeltaTime);
         //transform.GetComponent<Rigidbody2D>().velocity = moveVec * Speed;
@@ -302,6 +342,51 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         }
     }
 
+    public void Request_Game()
+    {
+        PV.RPC("Receive_GameRequest", PhotonTargets.All,myUID);
+        GameManager.instance.JoinButton.GetComponent<Button>().interactable=false;
+        isReady = true;
+        isGaming = true;
+        isGameReader = true;
+        GameManager.instance.StartButton.GetComponent<Button>().interactable = true;
+    }
+
+    [PunRPC]
+    public void Receive_GameRequest(long uid)
+    {
+
+        GameBoard.SetActive(true);
+    }
+
+    void Open_Close_GameBoard(long remoteUID)
+    {
+        foreach (Transform item in VideoSpawnPoint)
+        {
+            Debug.Log("test");
+            if (remoteUID.ToString() == item.name)
+            {
+                Debug.Log(myUID.ToString() + " " + item.name);
+
+                if (uiActive == true)
+                {
+                    uiActive = false;
+                }
+                else
+                {
+                    uiActive = true;
+                }
+
+                break;
+            }
+        }
+
+    }
+
+    public void Back_Game()
+    {
+        GameBoard.SetActive(false);
+    }
     public void test()
     {
         Debug.Log("@@@@@@");
@@ -374,7 +459,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     ///
     public void Interaction_OpenURL()
     {
-        
+
         if (cur_inter_data != "")
         {
             if (cur_inter_type=="url")
@@ -412,7 +497,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         }
         else
         {
-            
+
             bgm.GetComponent<Image>().color = new Color(0.48f, 0, 0.1f);
             bgm.Play();
 
@@ -602,7 +687,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
 
             }
         }
-       
+
     }
     private void OnTriggerExit2D(Collider2D col)
     {
@@ -629,6 +714,11 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
             stream.SendNext(grade);
+            stream.SendNext(myUID);
+            stream.SendNext(isReady);
+            stream.SendNext(isGameReader);
+            stream.SendNext(isGaming);
+            //stream.SendNext(isSpawn);
             //stream.SendNext(transform.GetComponent<Rigidbody2D>().velocity);
         }
         else
@@ -636,6 +726,11 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             curPos = (Vector3)stream.ReceiveNext();
             curRot = (Quaternion)stream.ReceiveNext();
             grade = (int)stream.ReceiveNext();
+            myUID = (long)stream.ReceiveNext();
+            isReady = (bool)stream.ReceiveNext();
+            isGameReader = (bool)stream.ReceiveNext();
+            isGaming = (bool)stream.ReceiveNext();
+           // isSpawn = (bool)stream.ReceiveNext();
             //transform.GetComponent<Rigidbody2D>().velocity = (Vector2)stream.ReceiveNext();
         }
     }
