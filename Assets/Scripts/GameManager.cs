@@ -233,6 +233,11 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
             TotalPanel.SetActive(true);
             curPlayer_Txt.text = name + " 패배";
         }
+        else
+        {
+            TotalPanel.SetActive(true);
+            curPlayer_Txt.text = "";
+        }
         JoinButton.GetComponent<Button>().interactable = true;
         StartButton.GetComponent<Button>().interactable = false;
         
