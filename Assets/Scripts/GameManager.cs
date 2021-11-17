@@ -219,7 +219,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     }
     public void TimeOver()
     {
-        PV.RPC("Quit_Game", PhotonTargets.All,"");
+        PV.RPC("Quit_Game", PhotonTargets.All, curPlayer_str);
         isFinish = false;
     }
 
