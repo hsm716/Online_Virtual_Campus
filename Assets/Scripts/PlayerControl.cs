@@ -83,8 +83,6 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     public Player_369 myGameCharacter;
 
 
-    public Transform player_interface;
-    public GameObject[] UI_OnOff;
 
     private void Awake()
     {

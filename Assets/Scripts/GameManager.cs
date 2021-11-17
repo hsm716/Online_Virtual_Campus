@@ -106,17 +106,6 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     public void SetGaming()
     {
         isGaming = true;
-        foreach (var p in players)
-        {
-            if (p.GetComponent<PlayerControl>().player_interface.gameObject.activeSelf==true)
-            {
-                foreach(var a in p.GetComponent<PlayerControl>().UI_OnOff)
-                {
-                    a.SetActive(false);
-                }
-                break;
-            }
-        }
     }
 
     [PunRPC]
@@ -252,15 +241,6 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
             p.GetComponent<PlayerControl>().isReady = false;
             p.GetComponent<PlayerControl>().isGameReader = false;
             p.GetComponent<PlayerControl>().isGaming = false;
-
-            if (p.GetComponent<PlayerControl>().player_interface.gameObject.activeSelf == true) 
-            { 
-                foreach (var a in p.GetComponent<PlayerControl>().UI_OnOff)
-                {
-                    a.SetActive(true);
-                    
-                }
-            }
 
         }
         GameUI.SetActive(false);
