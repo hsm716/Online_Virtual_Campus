@@ -192,6 +192,8 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     public void Quit_Game(string name)
     {
         isGaming = false;
+        isFinish = true;
+        
         var gp = GameObject.FindGameObjectsWithTag("game_player");
         players = new GameObject[0];
         foreach (var g in gp)
@@ -216,13 +218,12 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
             p.GetComponent<PlayerControl>().isGaming = false;
         }
         GameUI.SetActive(false);
-
-
+        isFinish = false;
     }
     public void TimeOver()
     {
         PV.RPC("Quit_Game", PhotonTargets.All, curPlayer_str);
-        isFinish = false;
+        
     }
 
     public void Check_result()
@@ -253,7 +254,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
         }
         if (time < 0f && isGaming&& isFinish==false)
         {
-            isFinish=true;
+            
             TimeOver();
         }
     }
