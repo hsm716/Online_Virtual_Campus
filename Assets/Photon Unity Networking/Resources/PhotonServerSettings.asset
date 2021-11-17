@@ -33,4 +33,9 @@ MonoBehaviour:
   - SendChatMessage
   - Receive_GameRequest
   - Request_Game
+  - panel_On
+  - Increase_Count
+  - Quit_Game
+  - InCrease_CurNumber
+  - SetLoserString
   DisableAutoOpenWizard: 1

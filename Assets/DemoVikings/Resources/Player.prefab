@@ -3967,6 +3967,7 @@ MonoBehaviour:
   content: {fileID: 3155412422509272538}
   spaceBetweenUserVideos: 150
   playerVideoList: []
+  player_Name_list: []
 --- !u!114 &8553410589033392884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4027,7 +4028,15 @@ MonoBehaviour:
   info_btn: {fileID: 8199457034546497506}
   VideoSpawnPoint: {fileID: 7352240331210415478}
   myUID: 0
+  uiActive: 0
   AVC: {fileID: 3592089908839912609}
+  GameBoard: {fileID: 0}
+  isReady: 0
+  isGaming: 0
+  isGameReader: 0
+  isSpawn: 0
+  myGameCharacter: {fileID: 4535334561895358279, guid: c0ee8b19e624a2b4db0cfa2d05a72d4f,
+    type: 3}
   bgm: {fileID: 1921688623525618165}
   bgm_slider: {fileID: 5403110527671146873}
   setting_pannel: {fileID: 7469339292464875667}

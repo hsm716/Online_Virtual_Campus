@@ -75,8 +75,12 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     public AgoraVideoChat AVC;
     public GameObject GameBoard;
 
+    public bool isReady;
     public bool isGaming;
     public bool isGameReader;
+    public bool isSpawn;
+
+    public Player_369 myGameCharacter;
 
     private void Awake()
     {
@@ -128,6 +132,7 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
                 grade_img.sprite = grade_sp[3];
                 break;
         }
+
         //GameBoard.SetActive(uiActive);
         if (PV.isMine)
         {
@@ -140,8 +145,17 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             bgm.volume = bgm_slider.value;
 
             ButtonUp();
+/*            if (isGaming && isSpawn == false)
+            {
+                isSpawn = true;
+                //GameObject po = PhotonNetwork.Instantiate("InGame_369_player", Vector3.zero, Quaternion.identity, 0);
+                Player_369 po = Instantiate(myGameCharacter, Vector3.zero, Quaternion.identity);
+                po.transform.SetParent(GameManager.instance.players_loc);
+                po.transform.localScale = new Vector3(1f, 1f, 1f);
+                po.nick_name.text = PhotonNetwork.player.NickName;
 
-            if(Mathf.Abs(joystick.Horizontal) > 0.2f || Mathf.Abs(joystick.Vertical) > 0.2f)
+            }*/
+            if (Mathf.Abs(joystick.Horizontal) > 0.2f || Mathf.Abs(joystick.Vertical) > 0.2f)
             {
                 if(Mathf.Abs(joystick.Horizontal) > Mathf.Abs(joystick.Vertical))
                 {
@@ -188,7 +202,6 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
                     }
                 }
             }
-
 
             bool hDown = Input.GetButtonDown("Horizontal") || left_Down || right_Down;
             bool vDown = Input.GetButtonDown("Vertical") || up_Down || down_Down;
@@ -320,9 +333,11 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
     public void Request_Game()
     {
         PV.RPC("Receive_GameRequest", PhotonTargets.All,myUID);
-        GameManager.instance.JoinButton.SetActive(false);
+        GameManager.instance.JoinButton.GetComponent<Button>().interactable=false;
+        isReady = true;
         isGaming = true;
-        GameManager.instance.StartButton.SetActive(true);
+        isGameReader = true;
+        GameManager.instance.StartButton.GetComponent<Button>().interactable = true;
     }
 
     [PunRPC]
@@ -688,8 +703,10 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             stream.SendNext(transform.rotation);
             stream.SendNext(grade);
             stream.SendNext(myUID);
-            stream.SendNext(isGaming);
+            stream.SendNext(isReady);
             stream.SendNext(isGameReader);
+            stream.SendNext(isGaming);
+            //stream.SendNext(isSpawn);
             //stream.SendNext(transform.GetComponent<Rigidbody2D>().velocity);
         }
         else
@@ -698,8 +715,10 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             curRot = (Quaternion)stream.ReceiveNext();
             grade = (int)stream.ReceiveNext();
             myUID = (long)stream.ReceiveNext();
-            isGaming = (bool)stream.ReceiveNext();
+            isReady = (bool)stream.ReceiveNext();
             isGameReader = (bool)stream.ReceiveNext();
+            isGaming = (bool)stream.ReceiveNext();
+           // isSpawn = (bool)stream.ReceiveNext();
             //transform.GetComponent<Rigidbody2D>().velocity = (Vector2)stream.ReceiveNext();
         }
     }
