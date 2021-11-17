@@ -40,4 +40,5 @@ MonoBehaviour:
   - SetLoserString
   - Quit_Game1
   - Next_Data
+  - SetGaming
   DisableAutoOpenWizard: 1

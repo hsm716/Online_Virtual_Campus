@@ -76,6 +76,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
         curNumber = 1;
         FindPlayers();
         isGaming = true;
+        PV.RPC("SetGaming", PhotonTargets.All);
         InGamePanel.SetActive(true);
         PV.RPC("panel_On", PhotonTargets.All);
         /*        foreach (var p in players)
@@ -92,6 +93,12 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
 
         curPlayer_str = players[0].GetComponent<PlayerControl>().NickName.text;
     }
+    [PunRPC]
+    public void SetGaming()
+    {
+        isGaming = true;
+    }
+
     [PunRPC]
     public void panel_On()
     {
