@@ -90,7 +90,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
                 }*/
 
 
-
+        curPlayer_str = players[0].GetComponent<PlayerControl>().NickName.text;
     }
     [PunRPC]
     public void panel_On()
@@ -151,6 +151,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
             {
                 PV.RPC("InCrease_CurNumber", PhotonTargets.All);
                 time = 5f;
+                PV.RPC("Next_Data", PhotonTargets.All);
             }
         }
     }
@@ -169,6 +170,7 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
             {
                 PV.RPC("InCrease_CurNumber", PhotonTargets.All);
                 time = 5f;
+                PV.RPC("Next_Data", PhotonTargets.All);
             }
         }
     }
