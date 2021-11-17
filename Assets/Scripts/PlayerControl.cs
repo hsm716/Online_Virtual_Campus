@@ -155,16 +155,34 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
                 bgm.volume = bgm_slider.value;
 
                 ButtonUp();
-    /*            if (isGaming && isSpawn == false)
-                {
-                    isSpawn = true;
-                    //GameObject po = PhotonNetwork.Instantiate("InGame_369_player", Vector3.zero, Quaternion.identity, 0);
-                    Player_369 po = Instantiate(myGameCharacter, Vector3.zero, Quaternion.identity);
-                    po.transform.SetParent(GameManager.instance.players_loc);
-                    po.transform.localScale = new Vector3(1f, 1f, 1f);
-                    po.nick_name.text = PhotonNetwork.player.NickName;
 
-                }*/
+                if(Input.GetAxisRaw("Horizontal") > 0)
+                {
+                    ButtonPress(3);
+                }
+                else if (Input.GetAxisRaw("Horizontal") < 0)
+                {
+                    ButtonPress(2);
+                }
+                if (Input.GetAxisRaw("Vertical") > 0)
+                {
+                    ButtonPress(0);
+                }
+                else if (Input.GetAxisRaw("Vertical") < 0)
+                {
+                    ButtonPress(1);
+                }
+
+                /*            if (isGaming && isSpawn == false)
+                            {
+                                isSpawn = true;
+                                //GameObject po = PhotonNetwork.Instantiate("InGame_369_player", Vector3.zero, Quaternion.identity, 0);
+                                Player_369 po = Instantiate(myGameCharacter, Vector3.zero, Quaternion.identity);
+                                po.transform.SetParent(GameManager.instance.players_loc);
+                                po.transform.localScale = new Vector3(1f, 1f, 1f);
+                                po.nick_name.text = PhotonNetwork.player.NickName;
+
+                            }*/
                 if (Mathf.Abs(joystick.Horizontal) > 0.2f || Mathf.Abs(joystick.Vertical) > 0.2f)
                 {
                     if(Mathf.Abs(joystick.Horizontal) > Mathf.Abs(joystick.Vertical))
