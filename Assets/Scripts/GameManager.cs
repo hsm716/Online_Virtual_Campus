@@ -242,11 +242,13 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
         curPlayerCount_txt.text = curPlayer_Count + " / " + PhotonNetwork.playerList.Count();
         curNumber_txt.text = curNumber + "";
         time_slider.value = time / 5f;
-        if(players[0].GetComponent<PlayerControl>().NickName.text == PhotonNetwork.player.NickName)
+        if (players.Count() != 0)
         {
-            time -= Time.deltaTime;
+            if (players[0].GetComponent<PlayerControl>().NickName.text == PhotonNetwork.player.NickName)
+            {
+                time -= Time.deltaTime;
+            }
         }
-        
         if (time < 0f && isGaming&& isFinish==false)
         {
             isFinish=true;
