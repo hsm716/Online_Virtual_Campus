@@ -38,10 +38,20 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
 
     public Transform players_loc;
     public GameObject TotalPanel;
-    public Text Loser_Txt;
+    public Text curPlayer_Txt;
+
+    public Text curPlayerTop_Txt;
+
     public Slider time_slider;
-    public string loser_str;
-    public bool isJJak = false;
+    public string curPlayer_str;
+
+    public int curIdx;
+
+
+    public AudioSource audio_player;
+    public AudioClip fail_snd;
+    public AudioClip number_snd;
+    public AudioClip clap_snd;
 
     public void FindPlayers()
     {
@@ -71,9 +81,10 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     public void StartGame()
     {
         time = 5f;
-        curNumber = 0;
+        curNumber = 1;
         FindPlayers();
         isGaming = true;
+        PV.RPC("SetGaming", PhotonTargets.All);
         InGamePanel.SetActive(true);
         PV.RPC("panel_On", PhotonTargets.All);
         /*        foreach (var p in players)
@@ -88,14 +99,35 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
                 }*/
 
 
-
+        curPlayer_str = players[0].GetComponent<PlayerControl>().NickName.text;
+        curPlayerTop_Txt.text = curPlayer_str+"님 차례";
     }
+    [PunRPC]
+    public void SetGaming()
+    {
+        isGaming = true;
+    }
+
     [PunRPC]
     public void panel_On()
     {
         foreach (var p in players)
         {
-            if (p.GetComponent<PhotonView>().owner.NickName == PhotonNetwork.player.NickName)
+            if (p.GetComponent<PlayerControl>().isReady == true)
+            {
+                InGamePanel.SetActive(true);
+                time = 5f;
+                p.GetComponent<PlayerControl>().isGaming = true;
+                GameObject po = PhotonNetwork.Instantiate("InGame_369_player", Vector3.zero, Quaternion.identity, 0);
+                po.transform.SetParent(players_loc);
+                po.transform.localScale = new Vector3(1f, 1f, 1f);
+                po.GetComponent<Player_369>().nick_name.text = p.GetComponent<PlayerControl>().NickName.text;
+            }
+            else
+            {
+                GameUI.SetActive(false);
+            }
+            /*if (p.GetComponent<PhotonView>().owner.NickName == PhotonNetwork.player.NickName)
             {
                 if(p.GetComponent<PlayerControl>().isReady == true)
                 {
@@ -110,12 +142,8 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
                 {
                     GameUI.SetActive(false);
                 }
-
-                
-                
-            }
+            }*/
         }
-        
     }
     [PunRPC]
     public void InCrease_CurNumber()
@@ -128,68 +156,105 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     }
     public void Select_Number()
     {
-        if ((curNumber+1).ToString().Contains('3')|| (curNumber + 1).ToString().Contains('6')|| (curNumber + 1).ToString().Contains('9'))
+        if (curPlayer_str == PhotonNetwork.player.NickName)
         {
-            loser_str = PhotonNetwork.player.NickName;
-            PV.RPC("Quit_Game",PhotonTargets.All);
-            
-        }
-        else
-        {
-            PV.RPC("InCrease_CurNumber", PhotonTargets.All);
-            isJJak = false;
-            time = 5f;
+            if (curNumber.ToString().Contains('3') || curNumber.ToString().Contains('6') || curNumber.ToString().Contains('9'))
+            {
+                curPlayer_str = PhotonNetwork.player.NickName;
+                PV.RPC("Quit_Game", PhotonTargets.All, curPlayer_str);
+
+            }
+            else
+            {
+                PV.RPC("InCrease_CurNumber", PhotonTargets.All);
+                
+                PV.RPC("Next_Data", PhotonTargets.All,1);
+            }
         }
     }
     public void Select_Clap()
     {
-        if (!((curNumber + 1).ToString().Contains('3') || (curNumber + 1).ToString().Contains('6') || (curNumber + 1).ToString().Contains('9')))
+        if (curPlayer_str == PhotonNetwork.player.NickName)
         {
-            loser_str = PhotonNetwork.player.NickName;
+            if (!(curNumber.ToString().Contains('3') || curNumber.ToString().Contains('6') || curNumber.ToString().Contains('9')))
+            {
+                curPlayer_str = PhotonNetwork.player.NickName;
 
-            PV.RPC("Quit_Game", PhotonTargets.All);
-            
+                PV.RPC("Quit_Game", PhotonTargets.All, curPlayer_str);
+
+            }
+            else
+            {
+                PV.RPC("InCrease_CurNumber", PhotonTargets.All);
+                
+                PV.RPC("Next_Data", PhotonTargets.All,0);
+            }
+        }
+    }
+    [PunRPC]
+    public void Next_Data(int type)
+    {
+        time = 5f;
+        curIdx++;
+        if (type == 0)
+        {
+            audio_player.PlayOneShot(clap_snd);
         }
         else
         {
-            PV.RPC("InCrease_CurNumber", PhotonTargets.All);
-            isJJak = true;
-            time = 5f;
+            audio_player.PlayOneShot(number_snd);
         }
+        if (curIdx >= players.Count())
+        {
+            curIdx = 0;
+        }
+        curPlayer_str = players[curIdx].GetComponent<PlayerControl>().NickName.text;
+        curPlayerTop_Txt.text = curPlayer_str;
     }
 
 
     [PunRPC]
-    public void Quit_Game()
+    public void Quit_Game(string name)
     {
         isGaming = false;
-        InGamePanel.SetActive(false);
-        TotalPanel.SetActive(true);
-        Loser_Txt.text = loser_str + " 패배";
-        curPlayer_Count = 1;
-        curNumber = 1;
-        JoinButton.GetComponent<Button>().interactable = true;
-        StartButton.GetComponent<Button>().interactable = false;
+        isFinish = true;
+        audio_player.PlayOneShot(fail_snd);
         var gp = GameObject.FindGameObjectsWithTag("game_player");
-        foreach(var g in gp)
+        players = new GameObject[0];
+        foreach (var g in gp)
         {
             Destroy(g);
         }
+        InGamePanel.SetActive(false);
+        curPlayer_Count = 1;
+        curNumber = 1;
+        if (name != "")
+        {
+            TotalPanel.SetActive(true);
+            curPlayer_Txt.text = name + " 패배";
+        }
+        else
+        {
+            TotalPanel.SetActive(true);
+            curPlayer_Txt.text = "";
+        }
+        JoinButton.GetComponent<Button>().interactable = true;
+        StartButton.GetComponent<Button>().interactable = false;
+        
         foreach (var p in players)
         {
             p.GetComponent<PlayerControl>().isReady = false;
             p.GetComponent<PlayerControl>().isGameReader = false;
             p.GetComponent<PlayerControl>().isGaming = false;
+
         }
         GameUI.SetActive(false);
-
-
+        isFinish = false;
     }
     public void TimeOver()
     {
-        loser_str = PhotonNetwork.player.NickName;
-        Quit_Game();
-        PV.RPC("Quit_Game", PhotonTargets.All);
+        PV.RPC("Quit_Game", PhotonTargets.All, curPlayer_str);
+        
     }
 
     public void Check_result()
@@ -209,21 +274,19 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
     private void Update()
     {
         curPlayerCount_txt.text = curPlayer_Count + " / " + PhotonNetwork.playerList.Count();
-        if(isJJak)
-            curNumber_txt.text = "짝!";
-        else
-            curNumber_txt.text = curNumber + "";
+        curNumber_txt.text = curNumber + "";
         time_slider.value = time / 5f;
-        time -= Time.deltaTime;
-        if (time < 0f&&isGaming)
+        if (players.Count() != 0)
         {
-            isGaming = false;
-            TimeOver();
+            if (players[0].GetComponent<PlayerControl>().NickName.text == PhotonNetwork.player.NickName)
+            {
+                time -= Time.deltaTime;
+            }
         }
-        if (isGaming&&isFinish==true)
+        if (time < 0f && isGaming&& isFinish==false)
         {
-            isFinish = false;
-            InGamePanel.SetActive(false);
+            
+            TimeOver();
         }
     }
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -235,8 +298,11 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
             stream.SendNext(curPlayer_Count);
             stream.SendNext(isGaming);
             stream.SendNext(curNumber);
-            stream.SendNext(loser_str);
-            stream.SendNext(Loser_Txt.text);
+            stream.SendNext(curPlayer_str);
+            stream.SendNext(curPlayer_Txt.text);
+            stream.SendNext(curIdx);
+            stream.SendNext(isFinish);
+            stream.SendNext(curPlayerTop_Txt.text);
         }
         else
         {
@@ -245,8 +311,11 @@ public class GameManager : Photon.MonoBehaviour,IPunObservable
             curPlayer_Count = (int)stream.ReceiveNext();
             isGaming = (bool)stream.ReceiveNext();
             curNumber = (int)stream.ReceiveNext();
-            loser_str = (string)stream.ReceiveNext();
-            Loser_Txt.text = (string)stream.ReceiveNext();
+            curPlayer_str = (string)stream.ReceiveNext();
+            curPlayer_Txt.text = (string)stream.ReceiveNext();
+            curIdx = (int)stream.ReceiveNext();
+            isFinish = (bool)stream.ReceiveNext();
+            curPlayerTop_Txt.text = (string)stream.ReceiveNext();
 
         }
     }

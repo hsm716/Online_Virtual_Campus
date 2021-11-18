@@ -82,6 +82,8 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
 
     public Player_369 myGameCharacter;
 
+    public InputField ChatInput;
+
     private void Awake()
     {
 
@@ -107,6 +109,8 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
             Location_text = GameObject.Find("Canvas").transform.GetChild(3).gameObject;
             Location_text.SetActive(true);
             uiActive = false;
+
+            ChatInput = GameObject.Find("chatInputField").GetComponent<InputField>();
         }
     }
 
@@ -136,78 +140,104 @@ public class PlayerControl : Photon.MonoBehaviour, IPunObservable
         //GameBoard.SetActive(uiActive);
         if (PV.isMine)
         {
-            //h = Input.GetAxisRaw("Horizontal");
-            //v = Input.GetAxisRaw("Vertical");
-
-            h = Input.GetAxisRaw("Horizontal") + right_Value + left_Value;
-            v = Input.GetAxisRaw("Vertical") + up_Value + down_Value;
-
-            bgm.volume = bgm_slider.value;
-
-            ButtonUp();
-/*            if (isGaming && isSpawn == false)
+            if (Input.GetKeyDown(KeyCode.Return))
             {
-                isSpawn = true;
-                //GameObject po = PhotonNetwork.Instantiate("InGame_369_player", Vector3.zero, Quaternion.identity, 0);
-                Player_369 po = Instantiate(myGameCharacter, Vector3.zero, Quaternion.identity);
-                po.transform.SetParent(GameManager.instance.players_loc);
-                po.transform.localScale = new Vector3(1f, 1f, 1f);
-                po.nick_name.text = PhotonNetwork.player.NickName;
-
-            }*/
-            if (Mathf.Abs(joystick.Horizontal) > 0.2f || Mathf.Abs(joystick.Vertical) > 0.2f)
+                ChatInput.Select();
+            }
+            if (!ChatInput.isFocused)
             {
-                if(Mathf.Abs(joystick.Horizontal) > Mathf.Abs(joystick.Vertical))
+    //h = Input.GetAxisRaw("Horizontal");
+                //v = Input.GetAxisRaw("Vertical");
+
+                h = Input.GetAxisRaw("Horizontal") + right_Value + left_Value;
+                v = Input.GetAxisRaw("Vertical") + up_Value + down_Value;
+
+                bgm.volume = bgm_slider.value;
+
+                ButtonUp();
+
+                if(Input.GetAxisRaw("Horizontal") > 0)
                 {
-                    v = 0;
-                    if(joystick.Horizontal > 0.2f)
+                    ButtonPress(3);
+                }
+                else if (Input.GetAxisRaw("Horizontal") < 0)
+                {
+                    ButtonPress(2);
+                }
+                if (Input.GetAxisRaw("Vertical") > 0)
+                {
+                    ButtonPress(0);
+                }
+                else if (Input.GetAxisRaw("Vertical") < 0)
+                {
+                    ButtonPress(1);
+                }
+
+                /*            if (isGaming && isSpawn == false)
+                            {
+                                isSpawn = true;
+                                //GameObject po = PhotonNetwork.Instantiate("InGame_369_player", Vector3.zero, Quaternion.identity, 0);
+                                Player_369 po = Instantiate(myGameCharacter, Vector3.zero, Quaternion.identity);
+                                po.transform.SetParent(GameManager.instance.players_loc);
+                                po.transform.localScale = new Vector3(1f, 1f, 1f);
+                                po.nick_name.text = PhotonNetwork.player.NickName;
+
+                            }*/
+                if (Mathf.Abs(joystick.Horizontal) > 0.2f || Mathf.Abs(joystick.Vertical) > 0.2f)
+                {
+                    if(Mathf.Abs(joystick.Horizontal) > Mathf.Abs(joystick.Vertical))
                     {
-                        h = 1;
-                        ButtonPress(3); //right : 3
-                        right_Down = true;
-                    }
-                    else if(joystick.Horizontal < -0.2f)
-                    {
-                        h = -1;
-                        ButtonPress(2); //left : 2
-                        left_Down = true;
+                        v = 0;
+                        if(joystick.Horizontal > 0.2f)
+                        {
+                            h = 1;
+                            ButtonPress(3); //right : 3
+                            right_Down = true;
+                        }
+                        else if(joystick.Horizontal < -0.2f)
+                        {
+                            h = -1;
+                            ButtonPress(2); //left : 2
+                            left_Down = true;
+                        }
+                        else
+                        {
+                            h = 0;
+                            left_Up = true;
+                            right_Up = true;
+                        }
                     }
                     else
                     {
                         h = 0;
-                        left_Up = true;
-                        right_Up = true;
+                        if (joystick.Vertical > 0.2f)
+                        {
+                            v = 1;
+                            ButtonPress(0); //up : 0
+                            up_Down = true;
+                        }
+                        else if(joystick.Vertical < -0.2f)
+                        {
+                            v = -1;
+                            ButtonPress(1); //down : 1
+                            down_Down = true;
+                        }
+                        else
+                        {
+                            v = 0;
+                            down_Up = true;
+                            up_Up = true;
+                        }
                     }
                 }
-                else
-                {
-                    h = 0;
-                    if (joystick.Vertical > 0.2f)
-                    {
-                        v = 1;
-                        ButtonPress(0); //up : 0
-                        up_Down = true;
-                    }
-                    else if(joystick.Vertical < -0.2f)
-                    {
-                        v = -1;
-                        ButtonPress(1); //down : 1
-                        down_Down = true;
-                    }
-                    else
-                    {
-                        v = 0;
-                        down_Up = true;
-                        up_Up = true;
-                    }
-                }
-            }
 
+
+            }
             bool hDown = Input.GetButtonDown("Horizontal") || left_Down || right_Down;
             bool vDown = Input.GetButtonDown("Vertical") || up_Down || down_Down;
             bool hUp = Input.GetButtonUp("Horizontal") || left_Up || right_Up;
             bool vUp = Input.GetButtonUp("Vertical") || up_Up || down_Up;
-
+            
 
             if (h != 0)
             {

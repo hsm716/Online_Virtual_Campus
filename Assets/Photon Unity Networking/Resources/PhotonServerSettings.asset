@@ -38,4 +38,7 @@ MonoBehaviour:
   - Quit_Game
   - InCrease_CurNumber
   - SetLoserString
+  - Quit_Game1
+  - Next_Data
+  - SetGaming
   DisableAutoOpenWizard: 1
